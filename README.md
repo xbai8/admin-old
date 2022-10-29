@@ -32,94 +32,14 @@ composer create-project workerman/webman
 composer require hangpu8/admin
 ```
 
-### 步骤3：设置站点访问目录
-``` text
-如是使用宝塔安装，请将站点运行目录设置为public
-```
-
-### 步骤4：nginx配置
-```nginx
-# 此处转发需要设置在server外层
-upstream saisaitu888_dev {
-  # HPAdmin HTTP Server 的 IP 及 端口
-  server 127.0.0.1:39870;
-}
-
-# 配置Vue远程跨域访问组件
-location ~ .*\.(vue)(.*){
-	add_header "Access-Control-Allow-Origin"  *;
-	add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD";
-	add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Requested-With, Content-Type, Accept";
-	if ($request_method = 'OPTIONS'){
-		return 204;
-	}
-}
-
-# 允许静态资源转发
-location ~ .*\.(js|css|jpg|jpeg|gif|png|ico|pdf|txt)$ {
-	proxy_pass http://saisaitu888_dev;
-}
-
-# Http
-location / {
-	# 将客户端的 Host 和 IP 信息一并转发到对应节点
-	proxy_set_header Host $http_host;
-	proxy_set_header X-Real-IP $remote_addr;
-	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	
-	# 转发Cookie，设置 SameSite
-	proxy_cookie_path / "/; secure; HttpOnly; SameSite=strict";
-	# 关闭重试机制
-	proxy_next_upstream off;
-	
-	# 跨域请求
-	if ($request_method = OPTIONS) {
-		add_header Access-Control-Allow-Origin $http_origin; # 必须要有
-		add_header Access-Control-Allow-Headers *; # 必须要有
-		add_header Access-Control-Allow-Methods "GET,POST,PUT, DELETE,OPTION"; # 不加也行
-		#add_header Access-Control-Allow-Credentials true; # 不加也行
-		return 200; # 204也可以，只要返回成功码即可
-	}
-	
-	# 判断是否访问根域名
-	if ( -e $request_uri) {
-		proxy_pass http://saisaitu888_dev;
-		break;
-	}
-	# 执行代理访问真实服务器
-	if ( !-e $request_filename ){
-		proxy_pass http://saisaitu888_dev;
-		break;
-	}
-}
-```
-
-### Websocket（可选，如有需要自行添加）
-``` nginx
-# Websocket
-location /tuziwebsocket {
-	# 将客户端的 Host 和 IP 信息一并转发到对应节点
-	proxy_set_header Host $http_host;
-	proxy_set_header X-Real-IP $remote_addr;
-	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	
-	# 转发Cookie，设置 SameSite
-	proxy_cookie_path / "/; secure; HttpOnly; SameSite=strict";
-	# 关闭重试机制
-	proxy_next_upstream off;
-	
-	proxy_pass http://tuziwebsocket_dev;
-	break;
-}
-```
-### 步骤5：设置目录权限
+### 步骤4：设置目录权限
 （Linux与mac权限需要设置）
 ```text
 设置 public 目录权限为777
 设置 runtime 目录权限为777
 设置 vendor 目录权限为777
 ```
-### 步骤6：访问域名，直接安装
+### 步骤5：访问域名，直接安装
 ```text
 以上操作完成，直接访问域名进行安装  
 安装完成后，可根据链接选择打开后台登录  
