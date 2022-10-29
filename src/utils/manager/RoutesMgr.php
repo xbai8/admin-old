@@ -41,10 +41,12 @@ class RoutesMgr
      */
     private static function install()
     {
+        // 安装目录
+        $installPath = str_replace('\\', '/', dirname(dirname(__DIR__))) . '/install';
         // 跳转安装
         Route::add(['GET'], '/', '\Hangpu8\Admin\install\InstallController@index');
         // 安装业务流程
-        Route::group('/install', function () {
+        Route::group('/install', function () use ($installPath) {
             // 安装首页
             Route::add(['GET'], '/step1', '\Hangpu8\Admin\install\InstallController@step1');
             // 检测环境
@@ -53,22 +55,21 @@ class RoutesMgr
             Route::add(['GET', 'POST'], '/step3', '\Hangpu8\Admin\install\InstallController@step3');
             // 开始安装
             Route::add(['POST'], '/step4', '\Hangpu8\Admin\install\InstallController@step4');
+            // 加载视图
+            Route::any('/view/', function (Request $request, $path = '') use ($installPath) {
+                // 安全检查，避免url里 /../../../password 这样的非法访问
+                if (strpos($path, '..') !== false) {
+                    return response('<h1>400 Bad Request</h1>', 400);
+                }
+                $file = "{$installPath}/view/index.html";
+                if (!is_file($file)) {
+                    return response('<h1>404 Not Found</h1>', 404);
+                }
+                return response()->file($file);
+            });
         })->middleware([
             AccessMiddleware::class
         ]);
-        // 加载视图
-        $installPath = str_replace('\\', '/', dirname(__DIR__)) . '/install';
-        Route::any('/install/view/', function (Request $request, $path = '') use ($installPath) {
-            // 安全检查，避免url里 /../../../password 这样的非法访问
-            if (strpos($path, '..') !== false) {
-                return response('<h1>400 Bad Request</h1>', 400);
-            }
-            $file = "{$installPath}/view/index.html";
-            if (!is_file($file)) {
-                return response('<h1>404 Not Found</h1>', 404);
-            }
-            return response()->file($file);
-        });
         // 静态资源
         Route::any('/hpadmin/[{path:.+}]', function (Request $request, $path = '') use ($installPath) {
             // 安全检查，避免url里 /../../../password 这样的非法访问

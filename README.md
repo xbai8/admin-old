@@ -29,7 +29,7 @@ composer create-project workerman/webman
 ```
 ### 步骤2：安装HPAdmin
 ```sh
-composer require hangpu8/admin
+composer require -W hangpu8/admin
 ```
 
 ### 步骤4：设置目录权限

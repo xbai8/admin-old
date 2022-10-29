@@ -12,6 +12,16 @@ use Hangpu8\Admin\Base;
  */
 class InstallController extends Base
 {
+    // 无需登录
+    protected $noNeedLogin = [
+        'index',
+        'step1',
+        'step2',
+        'step3',
+        'step4',
+        'step5',
+    ];
+
     // 安装步骤
     private static $nextStep = [
         'database'      => 'site',

@@ -19,10 +19,14 @@ class Auth
      * @param string $action
      * @return boolean
      */
-    public static function canAccess(string $controller, string $action): bool
+    public static function canAccess(string $control, string $action): bool
     {
+        // 无控制器地址
+        if (!$control) {
+            return true;
+        }
         // 获取控制器鉴权信息
-        $class = new \ReflectionClass($controller);
+        $class = new \ReflectionClass($control);
         $properties = $class->getDefaultProperties();
         $noNeedLogin = $properties['noNeedLogin'] ?? [];
         $noNeedAuth = $properties['noNeedAuth'] ?? [];
@@ -48,12 +52,12 @@ class Auth
         ];
         $adminRoleModel = SystemAdminRole::where($where)->field('rule')->find();
         if (!$adminRoleModel) {
-            throw new Exception('该部门不存在');
+            throw new Exception('该部门不存在', 401);
         }
         // 检测是否有操作权限
         $rule = explode(',', $adminRoleModel->rule);
-        $control = str_replace('Controller', '', basename(str_replace('\\', '/', $controller)));
-        $path = "{$control}/{$action}";
+        $ctrlName = str_replace('Controller', '', basename(str_replace('\\', '/', $control)));
+        $path = "{$ctrlName}/{$action}";
         if (!in_array($path, $rule)) {
             throw new Exception('没有该操作权限', 401);
         }

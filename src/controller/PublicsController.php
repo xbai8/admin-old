@@ -14,7 +14,7 @@ class PublicsController extends Base
      * 不需要登录的方法
      * @var string[]
      */
-    public $noNeedLogin = ['site', 'login', 'logout', 'captcha'];
+    protected $noNeedLogin = ['site', 'login', 'logout', 'captcha'];
 
     /**
      * 应用信息
