@@ -35,28 +35,32 @@ trait Crud
         // 获取前端输入
         [$where, $format, $page_size, $field, $order, $column, $allow_column] = $this->selectInput($request);
 
+        // 列表渲染对应数据
+        $builderColumn = Column::getTableColumn($allow_column);
         // 获取查询模型
         $model = $this->model;
         // 查询条件
+        $whereMap = isset($builderColumn['whereMap']) ? $builderColumn['whereMap'] : [];
+        $whereIndex = isset($whereMap['index']) ? $whereMap['index'] : [];
         foreach ($where as $field_name => $value) {
+            // 映射字段
+            $fieldMapName = isset($whereIndex[$field_name]) ? $whereIndex[$field_name] : $field_name;
             if (is_array($value)) {
                 if (in_array($value[0], ['>', '=', '<', '<>'])) {
-                    $model = $model->where($field_name, $value[0], $value[1]);
+                    $model = $model->where($fieldMapName, $value[0], $value[1]);
                 } elseif ($value[0] == 'in') {
-                    $model = $model->whereIn($field_name, $value[1]);
+                    $model = $model->whereIn($fieldMapName, $value[1]);
                 } else {
-                    $model = $model->whereBetween($field_name, $value);
+                    $model = $model->whereBetween($fieldMapName, $value);
                 }
             } else {
-                $model = $model->where($field_name, $value);
+                $model = $model->where($fieldMapName, $value);
             }
         }
         // 数据排序
         $model = $model->order($field, $order);
         // 设置分页
         $model = $model->paginate($page_size);
-        // 列表渲染对应数据
-        $builderColumn = Column::getTableColumn($allow_column);
         // 表格渲染
         $listBuilder = new ListBuilder;
         // 头部按钮

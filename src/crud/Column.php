@@ -19,12 +19,17 @@ class Column
 
         // 设置列
         $data = [
+            'whereMap'      => [],
             'screen'        => [],
             'topButton'     => [],
             'rightButton'   => [],
             'columns'       => [],
             'paginate'      => false,
         ];
+        // 查询条件字段映射
+        if (isset($properties['whereMap'])) {
+            $data['whereMap'] = $properties['whereMap'];
+        }
         // 字段列
         $attrColumns = isset($properties['columns']) ? $properties['columns'] : [];
         // 列存在则继续

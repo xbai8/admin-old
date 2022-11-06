@@ -113,7 +113,7 @@ class ListBuilder
             'title'             => '温馨提示',
             'content'           => '',
             'type'              => 'modal', // 支持：page，modal，confirm，table
-            'apiPrefix'         => [],
+            'rowPrefix'         => [],
             'width'             => '60%',
             'height'            => '55vh',
             'params'            => [],
@@ -147,7 +147,7 @@ class ListBuilder
             'title'                         => '温馨提示',
             'content'                       => '',
             'type'                          => 'modal', // 支持：page，modal，confirm，table
-            'apiPrefix'                     => [
+            'rowPrefix'                     => [
                 'id'
             ],
             'width'                         => '60%',
