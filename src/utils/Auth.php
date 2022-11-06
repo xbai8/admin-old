@@ -55,12 +55,12 @@ class Auth
             throw new Exception('该部门不存在', 401);
         }
         // 检测是否有操作权限
-        $rule = explode(',', $adminRoleModel->rule);
-        $ctrlName = str_replace('Controller', '', basename(str_replace('\\', '/', $control)));
-        $path = "{$ctrlName}/{$action}";
-        if (!in_array($path, $rule)) {
-            throw new Exception('没有该操作权限', 401);
-        }
+        // $rule = explode(',', $adminRoleModel->rule);
+        // $ctrlName = str_replace('Controller', '', basename(str_replace('\\', '/', $control)));
+        // $path = "{$ctrlName}/{$action}";
+        // if (!in_array($path, $rule)) {
+        //     throw new Exception('没有该操作权限', 401);
+        // }
         return true;
     }
 }

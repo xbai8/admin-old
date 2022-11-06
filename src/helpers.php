@@ -1,24 +1,24 @@
 <?php
 
-use think\Validate;
-
 /**
  * 验证器（支持场景验证）
  *
- * @param Validate $validate
+ * @param [type] $validate
  * @param array $data
  * @param string $scene
  * @return boolean
  */
-function hpValidate(Validate $validate, array $data, string $scene = ''): bool
+function hpValidate($validate, array $data, string $scene = ''): bool
 {
+    // 实例类
+    $class = new $validate;
     // 场景验证
     if ($scene) {
-        $validate->scene($scene);
+        $class->scene($scene);
     }
-    $result = $validate->check($data);
+    $result = $class->check($data);
     if (!$result) {
-        throw new Exception((string)$validate->getError());
+        throw new Exception((string)$class->getError());
     }
     return true;
 }

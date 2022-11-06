@@ -5,6 +5,7 @@
   "description": "Webman plugin hangpu8/admin",
   "require": {
     "php": ">=7.2",
+    "xaboy/form-builder": "~2.0",
     "webman/console": "^1.2",
     "webman/think-orm": "^1.0",
     "topthink/think-validate": "^2.0",

@@ -18,10 +18,9 @@ class VueRoutesMgr
      */
     public static function getRoutes(): array
     {
-        $active = 'Index/index';
+        $active = 'hpadmin/Index/index';
         $where = [
             ['show', '=', 1],
-            ['auth_type', '<>', 2],
         ];
         $data = SystemAuthRule::where($where)->select()->toArray();
         $routes = DataMgr::channelLevel($data, '', '', 'path');
@@ -45,10 +44,11 @@ class VueRoutesMgr
             $item = [
                 'title'         => $value['title'],
                 'icon'          => $value['icon'],
-                'path'          => "/{$path}",
+                'path'          => "{$value['module']}/{$path}",
+                'method'        => $value['method'],
+                'auth_params'   => $value['auth_params'],
                 'name'          => $name,
                 'component'     => $value['auth_rule'],
-                'auth_params'   => $value['auth_params'],
                 'children'      => []
             ];
             if ($value['path'] == 'Index/tabs') {

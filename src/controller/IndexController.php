@@ -7,6 +7,10 @@ use Hangpu8\Admin\utils\manager\VueRoutesMgr;
 
 class IndexController extends Base
 {
+    public function index()
+    {
+    }
+
     /**
      * 获取管理员数据
      *

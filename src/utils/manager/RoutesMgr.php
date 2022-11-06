@@ -2,6 +2,7 @@
 
 namespace Hangpu8\Admin\utils\manager;
 
+use Exception;
 use Hangpu8\Admin\middleware\AccessMiddleware;
 use Hangpu8\Admin\model\SystemAuthRule;
 use Webman\Route;
@@ -92,16 +93,23 @@ class RoutesMgr
      */
     private static function installed()
     {
-        $where[] = ['auth_type', '=', 2];
+        $where = [
+            ['auth_type', '=', 1],
+        ];
         $routes = SystemAuthRule::where($where)->select()->toArray();
 
         // 注册组路由
         Route::group('/', function () use ($routes) {
-            foreach ($routes as $route) {
-                $methods = explode(',', $route['method']);
-                list($controller, $action) = explode('/', $route['path']);
+            foreach ($routes as $value) {
+                if (strpos($value['path'], '/') === false) {
+                    throw new Exception('路由注册失败,path不符合规则');
+                }
+                $methods = explode(',', $value['method']);
+                list($controller, $action) = explode('/', $value['path']);
                 $controller = ucfirst($controller);
-                Route::add($methods, "{$controller}/{$action}", "{$route['namespace']}{$controller}Controller@{$action}");
+                $path = "{$value['module']}/{$controller}/{$action}";
+                $namespace = "{$value['namespace']}{$controller}Controller@{$action}";
+                Route::add($methods, $path, $namespace);
             }
         })->middleware([
             AccessMiddleware::class,
