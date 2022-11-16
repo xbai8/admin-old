@@ -2,9 +2,11 @@
 
 namespace Hangpu8\Admin\controller;
 
+use Exception;
 use Hangpu8\Admin\Base;
 use Hangpu8\Admin\crud\Crud;
 use Hangpu8\Admin\model\SystemConfigGroup;
+use support\Request;
 
 class SystemConfigGroupController extends Base
 {
@@ -12,6 +14,11 @@ class SystemConfigGroupController extends Base
     use Crud;
 
     // 筛选查询
+
+    // 事件定义
+    public $crudEvent = [
+        'delEventBefore'    => 'delBefore',
+    ];
 
     // 表格头部按钮
     public $topButton = [
@@ -39,7 +46,9 @@ class SystemConfigGroupController extends Base
                     'type'  => 'table',
                     'title' => '配置项列表',
                 ],
-                'style'     => []
+                'style'     => [
+                    'type'  => 'primary',
+                ]
             ],
             [
                 'name'      => 'edit',
@@ -59,14 +68,18 @@ class SystemConfigGroupController extends Base
                     'title'     => '温馨提示',
                     'content'   => '是否确认删除该数据？',
                 ],
-                'style'         => []
+                'style'         => [
+                    'type'      => 'danger',
+                ]
             ],
         ],
     ];
 
     // 表格列
     public $columns = [
-        'id'                => [],
+        'id'                => [
+            'width'         => 100
+        ],
         'title'             => [],
         'name'              => [],
         'icon'              => [],
@@ -116,23 +129,6 @@ class SystemConfigGroupController extends Base
             'save'          => true,
             'extra'         => [],
         ],
-        'is_system'         => [
-            'type'          => 'select',
-            'replace'       => '：0否，1是',
-            'save'          => true,
-            'extra'         => [
-                'options'   => [
-                    [
-                        'label' => '否',
-                        'value' => '0'
-                    ],
-                    [
-                        'label' => '是',
-                        'value' => '1'
-                    ],
-                ],
-            ],
-        ],
     ];
     // 表单修改视图列
     public $formEditColumns = [
@@ -145,31 +141,16 @@ class SystemConfigGroupController extends Base
         'name'              => [
             'type'          => 'input',
             'replace'       => '',
-            'save'          => true,
-            'extra'         => [],
+            'save'          => false,
+            'extra'         => [
+                'disabled'  => true,
+            ],
         ],
         'icon'              => [
             'type'          => 'input',
             'replace'       => '',
             'save'          => true,
             'extra'         => [],
-        ],
-        'is_system'         => [
-            'type'          => 'select',
-            'replace'       => '：0否，1是',
-            'save'          => true,
-            'extra'         => [
-                'options'   => [
-                    [
-                        'label' => '否',
-                        'value' => '0'
-                    ],
-                    [
-                        'label' => '是',
-                        'value' => '1'
-                    ],
-                ],
-            ],
         ],
     ];
 
@@ -182,5 +163,25 @@ class SystemConfigGroupController extends Base
     public function __construct()
     {
         $this->model = new SystemConfigGroup;
+    }
+
+    /**
+     * 删除前置事件
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function delBefore(Request $request)
+    {
+        $id = $request->get('id');
+        $model = $this->model;
+        $where = [
+            ['id', '=', $id],
+        ];
+        $model = $model->where($where)->find();
+        if ($model->is_system == '1') {
+            throw new Exception('系统配置分组，禁止删除');
+        }
+        return $model;
     }
 }

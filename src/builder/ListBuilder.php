@@ -18,10 +18,23 @@ class ListBuilder
     public function __construct()
     {
         $this->data = [
+            // 子数据
             'children'              => [
+                // 是否开启懒加载
+                'lazy'              => false,
+                // 懒加载请求API
                 'api'               => '',
+                // 懒加载请求类型
                 'method'            => '',
+                // 懒加载行Key
                 'field'             => 'id',
+                // 是否展开全部行
+                'defaultExpandAll'  => true,
+                // 渲染嵌套数据的配置选项
+                'treeProps'         => [
+                    'hasChildren'   => 'hasChildren',
+                    'children'      => 'children',
+                ],
             ],
             'screen'                => [
                 'api'               => '',
@@ -208,18 +221,14 @@ class ListBuilder
     }
 
     /**
-     * 设置树列表
+     * 设置树子数据配置
      *
-     * @param string $api
-     * @param string $method
-     * @param string $field
+     * @param array $config
      * @return ListBuilder
      */
-    public function setChildren(string $api, string $method, string $field): ListBuilder
+    public function setChildren(array $config): ListBuilder
     {
-        $this->data['children']['api']      = $api;
-        $this->data['children']['method']   = $method;
-        $this->data['children']['field']    = $field;
+        $this->data['children'] = array_merge($this->data['children'], $config);
         return $this;
     }
 

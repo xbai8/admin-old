@@ -222,9 +222,9 @@ function uncamelize(string $camelCaps, $separator = '_'): string
  *
  * @return mixed|null
  */
-function admin_id()
+function hp_admin_id()
 {
-    return session('admin.id');
+    return session('hp_admin.id');
 }
 
 /**
@@ -233,9 +233,9 @@ function admin_id()
  * @param null|array|string $fields
  * @return array|mixed|null
  */
-function admin($fields = null)
+function hp_admin($fields = null)
 {
-    if (!$admin = session('admin')) {
+    if (!$admin = session('hp_admin')) {
         return null;
     }
     if ($fields === null) {
@@ -250,37 +250,35 @@ function admin($fields = null)
     }
     return $admin[$fields] ?? null;
 }
-
 /**
- * 当前登录用户id
- *
- * @return mixed|null
+ * 对查询结果集进行排序
+ * @access public
+ * @param array $list 查询结果
+ * @param string $field 排序的字段名
+ * @param array $sortby 排序类型
+ * asc正向排序 desc逆向排序 nat自然排序
+ * @return array
  */
-function user_id()
+function list_sort_by($list, $field, $sortby = 'asc')
 {
-    return session('user.id');
-}
-
-/**
- * 当前登录用户
- *
- * @param null|array|string $fields
- * @return array|mixed|null
- */
-function user($fields = null)
-{
-    if (!$user = session('user')) {
-        return null;
-    }
-    if ($fields === null) {
-        return $user;
-    }
-    if (is_array($fields)) {
-        $results = [];
-        foreach ($fields as $field) {
-            $results[$field] = $user[$field] ?? null;
+    if (is_array($list)) {
+        $refer = $resultSet = array();
+        foreach ($list as $i => $data)
+            $refer[$i] = &$data[$field];
+        switch ($sortby) {
+            case 'asc': // 正向排序
+                asort($refer);
+                break;
+            case 'desc': // 逆向排序
+                arsort($refer);
+                break;
+            case 'nat': // 自然排序
+                natcasesort($refer);
+                break;
         }
-        return $results;
+        foreach ($refer as $key => $val)
+            $resultSet[] = &$list[$key];
+        return $resultSet;
     }
-    return $user[$fields] ?? null;
+    return false;
 }

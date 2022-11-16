@@ -20,18 +20,26 @@ final class DataMgr
      * @param string $children 子集字段名称
      * @return array
      */
-    static public function channelLevel($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1, $children = '_data')
+    static public function channelLevel($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1, $children = 'children')
     {
         if (empty($data)) {
-            return array();
+            return [];
         }
-        $arr = array();
+        $arr = [];
         foreach ($data as $v) {
             if ($v[$fieldPid] == $pid) {
                 $arr[$v[$fieldPri]] = $v;
                 $arr[$v[$fieldPri]]['_level'] = $level;
                 $arr[$v[$fieldPri]]['_html'] = str_repeat($html, $level - 1);
-                $arr[$v[$fieldPri]][$children] = self::channelLevel($data, $v[$fieldPri], $html, $fieldPri, $fieldPid, $level + 1);
+                $arr[$v[$fieldPri]][$children] = self::channelLevel(
+                    $data,
+                    $v[$fieldPri],
+                    $html,
+                    $fieldPri,
+                    $fieldPid,
+                    $level + 1,
+                    $children
+                );
             }
         }
         return $arr;

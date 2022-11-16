@@ -6,6 +6,7 @@ use Exception;
 use support\Request;
 use Hangpu8\Admin\Base;
 use Hangpu8\Admin\model\SystemAdmin;
+use Hangpu8\Admin\utils\Util;
 use Hangpu8\Admin\validate\SystemAdmin as ValidateSystemAdmin;
 
 class PublicsController extends Base
@@ -35,13 +36,13 @@ class PublicsController extends Base
         // 获取数据
         $post = $request->post();
         // 数据验证
-        hpValidate(new ValidateSystemAdmin, $post, 'login');
+        hpValidate(ValidateSystemAdmin::class, $post, 'login');
 
         // 查询数据
         $where['admin.username'] = $post['username'];
         $field = [
             'admin.*',
-            'role.title as level'
+            'role.title as level,role.is_system'
         ];
         $adminModel = SystemAdmin::alias('admin')
             ->join('system_admin_role role', 'role.id=admin.role_id')
@@ -51,10 +52,16 @@ class PublicsController extends Base
         if (!$adminModel) {
             throw new Exception('登录账号错误');
         }
+        // 验证登录密码
+        if (!Util::passwordVerify((string) $post['password'], (string)$adminModel->password)) {
+            throw new Exception('登录密码错误');
+        }
+        if ($adminModel->status == 0) {
+            throw new Exception('该用户已被冻结');
+        }
         $admin = $adminModel->toArray();
-        unset($admin['password']);
         $session = $request->session();
-        $session->set('admin', $admin);
+        $session->set('hp_admin', $admin);
 
         // 更新登录信息
         $ip = $request->getRealIp($safe_mode = true);

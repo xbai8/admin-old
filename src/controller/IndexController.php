@@ -18,7 +18,7 @@ class IndexController extends Base
      */
     public function user()
     {
-        $data = admin([
+        $data = hp_admin([
             'username',
             'nickname',
             'headimg',
@@ -34,7 +34,9 @@ class IndexController extends Base
      */
     public function menus()
     {
-        $data = VueRoutesMgr::getRoutes();
+        $admin = hp_admin();
+
+        $data = VueRoutesMgr::getRoutes((int) $admin['role_id']);
         return parent::successRes($data);
     }
 }

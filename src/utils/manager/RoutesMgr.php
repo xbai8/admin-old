@@ -114,5 +114,30 @@ class RoutesMgr
         })->middleware([
             AccessMiddleware::class,
         ]);
+        // 注册视图路由
+        $viewPath = str_replace('\\', '/', dirname(dirname(__DIR__))) . '/view';
+        Route::any('/admin/', function (Request $request, $path = '') use ($viewPath) {
+            if (strpos($path, '..') !== false) {
+                return response('<h1>400 Bad Request</h1>', 400);
+            }
+            // 文件
+            $file = "{$viewPath}/index.html";
+            if (!is_file($file)) {
+                return response('<h1>404 Not Found</h1>', 404);
+            }
+            return response()->withFile($file);
+        });
+        // 注册静态资源路由
+        Route::any('/hpadmin/[{path:.+}]', function (Request $request, $path = '') use ($viewPath) {
+            if (strpos($path, '..') !== false) {
+                return response('<h1>400 Bad Request</h1>', 400);
+            }
+            // 文件
+            $file = "{$viewPath}/hpadmin/{$path}";
+            if (!is_file($file)) {
+                return response('<h1>404 Not Found</h1>', 404);
+            }
+            return response()->withFile($file);
+        });
     }
 }
