@@ -284,8 +284,11 @@ class SystemUploadController extends Base
      */
     public static function urlReplace(string $url): string
     {
-        $config = self::getConfig();
-        $path = str_replace("{$config['url']}/", '', $url);
+        $storageConfig = self::getStorageConfig();
+        if (!isset($storageConfig['url'])) {
+            throw new Exception('替换地址错误，没有找到配置的URL');
+        }
+        $path = str_replace("{$storageConfig['url']}/", '', $url);
         return $path;
     }
 

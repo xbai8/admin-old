@@ -2,6 +2,11 @@
 
 namespace Hangpu8\Admin\install;
 
+/**
+ * @title 数据库相关操作
+ * @desc 安装时的数据库相关操作
+ * @author 楚羽幽 <admin@hangpu.net>
+ */
 class AppDatabase
 {
     /**
