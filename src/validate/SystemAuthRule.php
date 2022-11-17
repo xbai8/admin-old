@@ -28,7 +28,23 @@ class SystemAuthRule extends Validate
     ];
 
     protected $scene = [
-        'add'               =>  ['title'],
-        'edit'              =>  ['title'],
+        'add'               =>  [
+            'title',
+            'path',
+            'pid',
+            'module',
+            'namespace',
+            'sort',
+            'method',
+        ],
+        'edit'              =>  [
+            'title',
+            'path',
+            'pid',
+            'module',
+            'namespace',
+            'sort',
+            'method',
+        ],
     ];
 }

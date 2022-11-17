@@ -211,8 +211,21 @@ class SystemUploadController extends Base
         // 验证分类是否存在
         $cid = SystemUploadCateController::verifyDirName($dir_name);
 
+        // 获取上传配置
+        $config = self::getConfig();
+        // 默认最大上传100M
+        $max_size = isset($config['max_size']) ? $config['max_size'] : 1024 * 1024 * 100;
+        // 允许上传文件类型 为空则为允许所有
+        $ext_yes = isset($config['ext_yes']) ? $config['ext_yes'] : [];
+        // 不允许上传文件类型 为空则不限制
+        $ext_no = isset($config['ext_no']) ? $config['ext_no'] : [];
+
         // 保存文件至硬盘或云端
-        $result = Storage::path("uploads/{$dir_name}")->upload($file, false);
+        $result = Storage::path("uploads/{$dir_name}")
+            ->size($max_size)
+            ->extYes($ext_yes)
+            ->extNo($ext_no)
+            ->upload($file, false);
 
         // 储存附件
         $data = [
@@ -247,9 +260,19 @@ class SystemUploadController extends Base
      */
     public static function getConfig(): array
     {
-        $options = \config('plugin.shopwwi.filesystem.app');
-        $default = isset($options['default']) ? $options['default'] : 'public';
-        $storage = isset($options['storage']) ? $options['storage'] : [];
+        return \config('plugin.shopwwi.filesystem.app');
+    }
+
+    /**
+     * 获取默认选定器
+     *
+     * @return array
+     */
+    public static function getStorageConfig(): array
+    {
+        $confog = self::getConfig();
+        $default = isset($confog['default']) ? $confog['default'] : 'public';
+        $storage = isset($confog['storage']) ? $confog['storage'] : [];
         return isset($storage[$default]) ? $storage[$default] : [];
     }
 
