@@ -27,12 +27,12 @@ class SystemWebconfigController extends Base
         ],
     ];
 
-
     // 表格列右侧按钮
     public $rightButton = [
         'title'         => '操作选项',
         'extra'         => [
             'template'  => 'rightButtonList',
+            'width'     => 150
         ],
         'button'        => [
             [
@@ -60,13 +60,15 @@ class SystemWebconfigController extends Base
 
     // 表格列
     public $columns = [
-        'id'                => [],
+        'id'                => [
+            'width'         => 80,
+        ],
         'title'             => [],
         'name'              => [],
         'type'              => [],
     ];
     // 是否分页
-    public $paginate = false;
+    public $paginate = true;
 
     // 模型
     protected $model = null;

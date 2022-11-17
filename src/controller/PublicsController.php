@@ -8,6 +8,7 @@ use Hangpu8\Admin\Base;
 use Hangpu8\Admin\model\SystemAdmin;
 use Hangpu8\Admin\utils\Util;
 use Hangpu8\Admin\validate\SystemAdmin as ValidateSystemAdmin;
+use Shopwwi\WebmanFilesystem\Facade\Storage;
 
 class PublicsController extends Base
 {
@@ -60,6 +61,10 @@ class PublicsController extends Base
             throw new Exception('该用户已被冻结');
         }
         $admin = $adminModel->toArray();
+        // 处理头像
+        if ($admin['headimg']) {
+            $admin['headimg'] = Storage::url($admin['headimg']);
+        }
         $session = $request->session();
         $session->set('hp_admin', $admin);
 
@@ -71,5 +76,18 @@ class PublicsController extends Base
 
         // 返回数据
         return parent::successFul('登录成功', ['token' => $request->sessionId()]);
+    }
+
+    /**
+     * 退出登录
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function loginout(Request $request)
+    {
+        $session = $request->session();
+        $session->delete('hp_admin');
+        return parent::success('成功退出');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Hangpu8\Admin\utils;
 
-use Exception;
 use Hangpu8\Admin\utils\manager\VueRoutesMgr;
 
 /**
@@ -15,11 +14,13 @@ class Auth
     /**
      * 检测是否有权限
      *
-     * @param string $controller
+     * @param string $control
      * @param string $action
+     * @param string $msg
+     * @param integer $code
      * @return boolean
      */
-    public static function canAccess(string $control, string $action): bool
+    public static function canAccess(string $control, string $action, string &$msg, int &$code): bool
     {
         // 无控制器地址
         if (!$control) {
@@ -39,7 +40,9 @@ class Auth
         $admin = hp_admin();
         if (!$admin) {
             // 401是未登录固定的返回码
-            throw new Exception('请先登录', 401);
+            $code = 401;
+            $msg = '请先登录';
+            return false;
         }
 
         // 不需要鉴权
@@ -56,7 +59,9 @@ class Auth
         $ctrlName = str_replace('Controller', '', basename(str_replace('\\', '/', $control)));
         $path = "{$ctrlName}/{$action}";
         if (!in_array($path, $rule)) {
-            throw new Exception('没有该操作权限', 401);
+            $code = 403;
+            $msg = '没有该操作权限';
+            return false;
         }
         return true;
     }

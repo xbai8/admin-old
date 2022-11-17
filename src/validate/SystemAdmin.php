@@ -11,6 +11,7 @@ class SystemAdmin extends Validate
         'password'          => 'require',
         'nickname'          => 'require',
         'role_id'           => 'require',
+        'headimg'           => 'require',
     ];
 
     protected $message  =   [
@@ -18,11 +19,12 @@ class SystemAdmin extends Validate
         'password.require'  => '请输入登录密码',
         'nickname.require'  => '请输入用户昵称',
         'role_id.require'   => '请选择所属角色',
+        'headimg.require'   => '请上传头像',
     ];
 
     protected $scene = [
         'login'             =>  ['username', 'password'],
-        'add'               =>  ['role_id', 'nickname', 'username', 'password'],
-        'edit'              =>  ['role_id', 'nickname', 'username', 'password'],
+        'add'               =>  ['role_id', 'nickname', 'username', 'password', 'headimg'],
+        'edit'              =>  ['role_id', 'nickname', 'username', 'headimg'],
     ];
 }

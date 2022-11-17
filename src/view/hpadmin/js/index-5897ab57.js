@@ -1,1 +1,0 @@
-import{g as e,o as a,c as r,t as n,h as o}from"./index-8e01f4d1.js";const l={__name:"index",setup(s){const t=e.currentRoute.value.path;return(c,u)=>(a(),r("div",null,"\u8868\u5355\u9875\uFF0C\u8DEF\u5F84\uFF1A"+n(o(t)),1))}};export{l as default};

@@ -7,6 +7,7 @@ use Hangpu8\Admin\Base;
 use Hangpu8\Admin\crud\Crud;
 use Hangpu8\Admin\model\SystemAdmin;
 use Hangpu8\Admin\utils\Util;
+use Shopwwi\WebmanFilesystem\Facade\Storage;
 use support\Request;
 
 class SystemAdminController extends Base
@@ -111,13 +112,21 @@ class SystemAdminController extends Base
             'type'          => 'input',
             'replace'       => '',
             'save'          => true,
-            'extra'         => [],
+            'extra'         => [
+                'col'       => [
+                    'span'  => 12
+                ],
+            ],
         ],
         'password'          => [
             'type'          => 'input',
             'replace'       => '',
             'save'          => true,
-            'extra'         => [],
+            'extra'         => [
+                'col'       => [
+                    'span'  => 12
+                ],
+            ],
         ],
         'nickname'          => [
             'type'          => 'input',
@@ -133,16 +142,6 @@ class SystemAdminController extends Base
             'type'          => 'input',
             'type'          => 'select',
             'callback'      => [SystemAdminRoleController::class, 'getRoleOptions'],
-            'replace'       => '',
-            'save'          => true,
-            'extra'         => [
-                'col'       => [
-                    'span'  => 12
-                ],
-            ],
-        ],
-        'headimg'           => [
-            'type'          => 'input',
             'replace'       => '',
             'save'          => true,
             'extra'         => [
@@ -172,20 +171,55 @@ class SystemAdminController extends Base
                 ],
             ],
         ],
+        'headimg'           => [
+            'type'          => 'upload',
+            'replace'       => '',
+            'save'          => true,
+            'extra'         => [
+                'col'       => [
+                    'span'  => 12
+                ],
+                'props'     => [
+                    'modalTitle'    => '图片预览',
+                    'listType'      => 'picture-card',
+                    'uploadType'    => 'image',
+                    'limit'         => 1,
+                    'multiple'      => true,
+                    'action'        => 'api1/hpadmin/SystemUpload/upload',
+                    'headers'       => [
+                        'X-Requested-With'  => 'XMLHttpRequest',
+                    ],
+                    'data'          => [
+                        'dir_name'  => 'system_name',
+                    ],
+                ],
+            ],
+        ],
     ];
+
+    // 编辑表单数据处理
+    public $formEditViewCheck = 'AdminEditViewCheck';
     // 表单修改视图列
     public $formEditColumns = [
         'username'          => [
             'type'          => 'input',
             'replace'       => '',
             'save'          => true,
-            'extra'         => [],
+            'extra'         => [
+                'col'       => [
+                    'span'  => 12
+                ],
+            ],
         ],
         'password'          => [
             'type'          => 'input',
             'replace'       => '',
             'save'          => true,
-            'extra'         => [],
+            'extra'         => [
+                'col'       => [
+                    'span'  => 12
+                ],
+            ],
         ],
         'nickname'          => [
             'type'          => 'input',
@@ -201,16 +235,6 @@ class SystemAdminController extends Base
             'type'          => 'input',
             'type'          => 'select',
             'callback'      => [SystemAdminRoleController::class, 'getRoleOptions'],
-            'replace'       => '',
-            'save'          => true,
-            'extra'         => [
-                'col'       => [
-                    'span'  => 12
-                ],
-            ],
-        ],
-        'headimg'           => [
-            'type'          => 'input',
             'replace'       => '',
             'save'          => true,
             'extra'         => [
@@ -236,6 +260,30 @@ class SystemAdminController extends Base
                     [
                         'label' => '正常',
                         'value' => '1'
+                    ],
+                ],
+            ],
+        ],
+        'headimg'           => [
+            'type'          => 'upload',
+            'replace'       => '',
+            'save'          => true,
+            'extra'         => [
+                'col'       => [
+                    'span'  => 12
+                ],
+                'props'     => [
+                    'modalTitle'    => '图片预览',
+                    'listType'      => 'picture-card',
+                    'uploadType'    => 'image',
+                    'limit'         => 1,
+                    'multiple'      => true,
+                    'action'        => 'api1/hpadmin/SystemUpload/upload',
+                    'headers'       => [
+                        'X-Requested-With'  => 'XMLHttpRequest',
+                    ],
+                    'data'          => [
+                        'dir_name'  => 'system_name',
                     ],
                 ],
             ],
@@ -293,6 +341,10 @@ class SystemAdminController extends Base
         $passwordHash = Util::passwordHash($data['password']);
         $data['password'] = $passwordHash;
 
+        // 头像处理
+        $headimg = is_array($data['headimg']) ? current($data['headimg']) : $data['headimg'];
+        $data['headimg'] = SystemUploadController::urlReplace((string) $headimg);
+
         // 返回处理数据
         return $data;
     }
@@ -308,11 +360,34 @@ class SystemAdminController extends Base
         $admin_id = hp_admin_id();
         $data['pid'] = $admin_id;
 
-        // 加密哈希值
-        $passwordHash = Util::passwordHash($data['password']);
-        $data['password'] = $passwordHash;
+        if (isset($data['password']) && $data['password']) {
+            // 加密哈希值
+            $passwordHash = Util::passwordHash($data['password']);
+            $data['password'] = $passwordHash;
+        } else {
+            unset($data['password']);
+        }
+
+        // 头像处理
+        $headimg = is_array($data['headimg']) ? current($data['headimg']) : $data['headimg'];
+        $data['headimg'] = SystemUploadController::urlReplace((string) $headimg);
 
         // 返回处理数据
+        return $data;
+    }
+
+    /**
+     * 编辑表单渲染数据处理
+     *
+     * @param array $data
+     * @return array
+     */
+    public function AdminEditViewCheck(array $data): array
+    {
+        // 头像拼接处理
+        if ($data['headimg']) {
+            $data['headimg'] = Storage::url($data['headimg']);
+        }
         return $data;
     }
 

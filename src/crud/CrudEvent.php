@@ -285,11 +285,10 @@ trait CrudEvent
             ) {
                 $callbackCls = $value['callback'][0];
                 $callbackMethod = $value['callback'][1];
-                $callbackData = call_user_func([
+                $value = call_user_func([
                     $callbackCls,
                     $callbackMethod
-                ]);
-                $value['extra']['options'] = $callbackData;
+                ], $value);
             }
             $builder = $builder->addRow(
                 $value['field'],

@@ -269,17 +269,19 @@ class SystemAdminRoleController extends Base
     /**
      * 获取部门选项
      *
-     * @return void
+     * @param array $column
+     * @return array
      */
-    public static function getRoleOptions(): array
+    public static function getRoleOptions(array $data): array
     {
         $field = 'id as value,title as label';
-        $data = SystemAdminRole::order('id desc')
+        $options = SystemAdminRole::order('id desc')
             ->field($field)
             ->select()
             ->each(function ($item) {
                 return $item;
             })->toArray();
+        $data['extra']['options'] = $options;
         return $data;
     }
 

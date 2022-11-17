@@ -16,16 +16,20 @@ class AccessMiddleware implements MiddlewareInterface
 {
     public function process(Request $request, callable $handler): Response
     {
+        // 从headers中拿去请求用户token
+        $authorization = $request->header('Authorization');
+        $request->sessionId($authorization);
+        // 获得请求路径
         $controller = $request->controller;
         $action = $request->action;
-        Auth::canAccess($controller, $action);
-
-        $response = $request->method() == 'OPTIONS' ? response('', 204) : $handler($request);
-        return $response->withHeaders([
-            'Access-Control-Allow-Credentials'  => 'true',
-            'Access-Control-Allow-Origin'       => $request->header('Origin', '*'),
-            'Access-Control-Allow-Methods'      => 'GET,POST,PUT,DELETE,HEAD',
-            'Access-Control-Allow-Headers'      => 'Authorization, Origin, X-Requested-With, X-PJAX, Content-Type, Accept',
-        ]);
+        $msg = '';
+        $code = 0;
+        // 鉴权检测
+        if (!Auth::canAccess($controller, $action, $msg, $code)) {
+            $response = json(['code' => $code, 'msg' => $msg]);
+        } else {
+            $response = $request->method() == 'OPTIONS' ? response('', 204) : $handler($request);
+        }
+        return $response;
     }
 }

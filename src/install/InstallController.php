@@ -4,6 +4,7 @@ namespace Hangpu8\Admin\install;
 
 use Exception;
 use Hangpu8\Admin\Base;
+use Hangpu8\Admin\utils\Util;
 
 /**
  * @title Admin安装业务
@@ -203,7 +204,7 @@ class InstallController extends Base
                     'role_id'       => 1,
                     'pid'           => 0,
                     'username'      => $admin['admin_name'],
-                    'password'      => md5($admin['password']),
+                    'password'      => Util::passwordHash((string) $admin['password']),
                     'nickname'      => 'HPAdmin',
                 ];
                 foreach ($data as $key => $value) {
