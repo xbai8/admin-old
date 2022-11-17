@@ -264,6 +264,13 @@ class InstallController extends Base
                 'text'  => self::$stepText[$step],
                 'next'  => self::$nextStep[$step],
             ];
+            // 删除TP默认数据库配置文件
+            $thinkORMPath = config_path() . '/thinkorm.php';
+            if (file_exists($thinkORMPath)) {
+                unlink($thinkORMPath);
+            }
+
+            // 返回结果
             return parent::successRes($response);
         } else {
             $html = "<div>恭喜你，应用安装成功</div>";
