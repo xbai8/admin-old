@@ -51,7 +51,7 @@ trait ClassParse
      * @param string $method
      * @return Object
      */
-    public function getClassMethod(string $class = '', string $method): Object
+    public function getClassMethod(string $method, string $class = ''): Object
     {
         $class = $this->parse($class);
         $method = $class->getMethod($method);
