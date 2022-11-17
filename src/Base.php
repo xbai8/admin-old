@@ -5,7 +5,7 @@ namespace Hangpu8\Admin;
 use Hangpu8\Admin\utils\Json;
 
 /**
- * @title 控制器基类
+ * @title 控制器基类1
  * @desc 控制器描述
  * @author 楚羽幽 <admin@hangpu.net>
  */
