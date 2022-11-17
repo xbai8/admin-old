@@ -197,7 +197,7 @@ class InstallController extends Base
                 break;
                 // 写入管路员信息
             case 'admin':
-                $smt = $db->prepare("insert into `{$database['prefix']}system_admin` (`create_at`, `update_at`, `role_id`, `pid`, `username`, `password`, `nickname`) values (:create_at, :update_at, :role_id, :pid, :username, :password, :nickname, :is_system)");
+                $smt = $db->prepare("insert into `{$database['prefix']}system_admin` (`create_at`, `update_at`, `role_id`, `pid`, `username`, `password`, `nickname`) values (:create_at, :update_at, :role_id, :pid, :username, :password, :nickname, :is_system, :status)");
                 $data = [
                     'create_at'     => $dateTime,
                     'update_at'     => $dateTime,
@@ -207,6 +207,7 @@ class InstallController extends Base
                     'password'      => Util::passwordHash((string) $admin['password']),
                     'nickname'      => 'HPAdmin',
                     'is_system'     => 1,
+                    'status'        => 1,
                 ];
                 foreach ($data as $key => $value) {
                     $smt->bindValue($key, $value);
