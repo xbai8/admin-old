@@ -148,6 +148,20 @@ trait CrudEvent
         } else {
             $items = $model->select()->toArray();
         }
+        // 解析控制器
+        $class = $this->parse();
+        // 获取控制器属性
+        $properties = $this->getProperties();
+        // 表格后置事件（处理已查询数据）
+        if (isset($properties['crudEvent']['tableEventAfter']) && $properties['crudEvent']['tableEventAfter']) {
+            $items = call_user_func(
+                [
+                    $class->name,
+                    $properties['crudEvent']['tableEventAfter']
+                ],
+                $items
+            );
+        }
         // 设置渲染数据
         $builder = $builder->setData($items);
         // 获取渲染规则

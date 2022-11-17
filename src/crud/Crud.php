@@ -54,19 +54,8 @@ trait Crud
         if (!$model || !is_object($model)) {
             throw new Exception('构造表格数据错误');
         }
-        // 表格后置事件（表格渲染）
-        if (isset($properties['crudEvent']['tableEventAfter']) && $properties['crudEvent']['tableEventAfter']) {
-            return call_user_func(
-                [
-                    $class->name,
-                    $properties['crudEvent']['tableEventAfter']
-                ],
-                $model
-            );
-        } else {
-            // 内置渲染
-            return $this->tableEventAfter($model);
-        }
+        // 内置渲染
+        return $this->tableEventAfter($model);
     }
 
     /**
