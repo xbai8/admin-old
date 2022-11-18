@@ -89,7 +89,7 @@ class VueRoutesMgr
             // 系统级部门（全部权限）
             $where = [];
             $data = SystemAuthRule::where($where)
-                ->order('id', 'asc')
+                ->order('sort', 'asc')
                 ->visible(self::$visible)
                 ->select()
                 ->toArray();
@@ -100,6 +100,7 @@ class VueRoutesMgr
                 ['path', 'in', $rule],
             ];
             $data = SystemAuthRule::where($where)
+                ->order('id', 'asc')
                 ->visible(self::$visible)
                 ->select()
                 ->toArray();
@@ -109,7 +110,7 @@ class VueRoutesMgr
                     self::getParentRule($data, $value['pid']);
                 }
             }
-            $data = list_sort_by($data, 'id', 'asc');
+            $data = list_sort_by($data, 'sort', 'asc');
         }
         return $data;
     }
