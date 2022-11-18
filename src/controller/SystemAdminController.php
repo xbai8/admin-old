@@ -23,6 +23,7 @@ class SystemAdminController extends Base
     // 事件定义
     public $crudEvent = [
         'tableEventBefore'  => 'tableDataCallback',
+        'tableEventAfter'   => 'tableDataCheck',
         'delEventBefore'    => 'delBefore',
     ];
 
@@ -91,6 +92,9 @@ class SystemAdminController extends Base
         'role_id'           => [],
         'username'          => [],
         'nickname'          => [],
+        'headimg'           => [
+            'type'          => 'image'
+        ],
         'status'            => [
             'type'          => 'tag',
             'replace'       => '：0禁用，1启用',
@@ -325,6 +329,22 @@ class SystemAdminController extends Base
 
         // 返回构造模型
         return $model;
+    }
+
+    /**
+     * 表格数据处理后置事件
+     *
+     * @param array $data
+     * @return array
+     */
+    public static function tableDataCheck(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (isset($value['headimg']) && $value['headimg']) {
+                $data[$key]['headimg'] = Storage::url($value['headimg']);
+            }
+        }
+        return $data;
     }
 
     /**

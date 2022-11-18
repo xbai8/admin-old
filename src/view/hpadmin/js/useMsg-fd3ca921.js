@@ -1,0 +1,1 @@
+import{E as e,g as n,h as u}from"./index-54f4916a.js";const i=(s,r="")=>{g(s,"error",r)},g=(s,r="error",o="")=>{n({message:s,type:r,onClose(){typeof o=="string"&&o!=""&&u(o),typeof o=="function"&&o()}})},a=(s="\u6B63\u5728\u52A0\u8F7D\u4E2D...",r=!0)=>e.service({lock:r,text:s,background:"rgba(0, 0, 0, 0.7)"});export{i as a,a as u};
