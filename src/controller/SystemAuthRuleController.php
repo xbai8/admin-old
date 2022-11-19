@@ -246,7 +246,7 @@ class SystemAuthRuleController extends Base
         ],
         'icon'              => [
             'type'          => 'input',
-            'value'         => "hp-product",
+            'value'         => "hp-packaging",
             'replace'       => "",
             'save'          => true,
             'extra'         => [],
@@ -528,11 +528,36 @@ class SystemAuthRuleController extends Base
             ->setChildren([
                 'field'             => 'path',
             ])
-            ->addColumn('module', '模块名称')
-            ->addColumn('path', '菜单地址')
+            ->addColumn('modulePath', '菜单地址')
             ->addColumn('title', '菜单名称')
-            ->addColumn('sort', '菜单排序', [
-                'width'             => 80,
+            ->addColumn('auth_rule', '组件类型', [
+                'type'              => 'tag',
+                'width'             => 120,
+                'options'           => [
+                    'layouts/index' => '布局组件',
+                    ''              => '没有组件',
+                    'form/index'    => '表单组件',
+                    'table/index'   => '表格组件',
+                    'remote/index'  => '远程组件'
+                ],
+                'style'             => [
+                    'layouts/index' => [
+                        'type'      => 'warning',
+                    ],
+                    '' => [
+                        'type'      => 'info',
+                    ],
+                    'form/index'    => [
+                        'type'      => 'danger',
+                    ],
+                    'table/index'   => [
+                        'type'      => 'success',
+                    ],
+                    'remote/index'  => [
+                        'effect'    => 'dark',
+                        'color'     => '#626aef',
+                    ],
+                ],
             ])
             ->addColumn('method', '请求类型', [
                 'width'             => 160
@@ -580,6 +605,7 @@ class SystemAuthRuleController extends Base
         $list = $model->orderBy('sort', 'asc')
             ->get()
             ->each(function ($item) {
+                $item->modulePath = "{$item->module}/{$item->path}";
                 return $item;
             })->toArray();
         $list = DataMgr::channelLevel($list, '0', '', 'path');
