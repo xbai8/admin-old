@@ -175,9 +175,9 @@ trait CrudEvent
     /**
      * 添加表单渲染
      *
-     * @return FormBuilder
+     * @return Response
      */
-    public function addEventBefore(): FormBuilder
+    public function addEventBefore(): Response
     {
         // 构造表单
         $builder = new FormBuilder;
@@ -205,8 +205,9 @@ trait CrudEvent
                 $value['extra']
             );
         }
+        $data = $builder->create();
         // 返回视图构造器
-        return $builder;
+        return Json::successRes($data);
     }
 
 
@@ -298,6 +299,13 @@ trait CrudEvent
                     $value['callback'][0],
                     $value['callback'][1]
                 ], $value);
+            }
+            // 处理配置项上传路径
+            if (isset($value['type']) && $value['type'] == 'upload') {
+                $extra = [
+                    'props'     => config('plugin.hangpu8.admin.upload'),
+                ];
+                $value['extra'] = array_merge($value['extra'], $extra);
             }
             $builder = $builder->addRow(
                 $value['field'],

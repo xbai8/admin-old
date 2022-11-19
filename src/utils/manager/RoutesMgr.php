@@ -5,7 +5,6 @@ namespace Hangpu8\Admin\utils\manager;
 use Exception;
 use Hangpu8\Admin\middleware\AccessMiddleware;
 use Hangpu8\Admin\model\SystemAuthRule;
-use Illuminate\Support\Facades\DB;
 use Webman\Route;
 use support\Request;
 

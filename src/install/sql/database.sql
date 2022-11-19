@@ -81,7 +81,7 @@ CREATE TABLE `php_system_admin_role`  (
 -- ----------------------------
 -- Records of php_system_admin_role
 -- ----------------------------
-INSERT INTO `php_system_admin_role` VALUES (1, '2022-10-28 07:11:51', '2022-11-16 11:30:39', 1, '系统管理员', 'Index/tabs,Index/index,Publics/login,Publics/site,Index/user,Index/menus,SystemConfigGroup/add,Publics/loginout', '1');
+INSERT INTO `php_system_admin_role` VALUES (1, '2022-10-28 07:11:51', '2022-11-16 11:30:39', 1, '系统管理员', 'Index/tabs,Index/index,Publics/login,Publics/site,Index/user,Index/menus,Publics/loginout', '1');
 
 -- ----------------------------
 -- Table structure for php_system_auth_rule
@@ -113,13 +113,13 @@ CREATE TABLE `php_system_auth_rule`  (
 -- ----------------------------
 -- Records of php_system_auth_rule
 -- ----------------------------
-INSERT INTO `php_system_auth_rule` VALUES (1, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Index/tabs', '\\Hangpu8\\Admin\\controller\\', '', '首页', 0, 'GET', 'layouts/index', '0', '', 'hp-packaging', '1', '1', '1', '1');
+INSERT INTO `php_system_auth_rule` VALUES (1, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Index/tabs', '\\Hangpu8\\Admin\\controller\\', '0', '首页', 0, 'GET', 'layouts/index', '0', '', 'hp-packaging', '1', '1', '1', '1');
 INSERT INTO `php_system_auth_rule` VALUES (2, '2022-10-27 17:22:51', '2022-11-15 08:44:40', 'hpadmin', 'Index/index', '\\Hangpu8\\Admin\\controller\\', 'Index/tabs', '看板', 0, 'GET', 'remote/index', '0', '', '', '1', '1', '1', '1');
 INSERT INTO `php_system_auth_rule` VALUES (3, '2022-10-27 17:22:51', '2022-11-15 09:07:27', 'hpadmin', 'Publics/login', '\\Hangpu8\\Admin\\controller\\', 'Index/tabs', '系统登录', 0, 'POST', '', '1', '', '', '0', '0', '1', '1');
 INSERT INTO `php_system_auth_rule` VALUES (4, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Publics/site', '\\Hangpu8\\Admin\\controller\\', 'Index/tabs', '获取应用信息', 0, 'GET', '', '1', '', '', '0', '0', '1', '1');
 INSERT INTO `php_system_auth_rule` VALUES (5, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Index/user', '\\Hangpu8\\Admin\\controller\\', 'Index/tabs', '获取管理员信息', 0, 'GET', '', '1', '', '', '0', '1', '1', '1');
 INSERT INTO `php_system_auth_rule` VALUES (6, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Index/menus', '\\Hangpu8\\Admin\\controller\\', 'Index/tabs', '获取菜单信息', 0, 'GET', '', '1', '', '', '0', '1', '1', '1');
-INSERT INTO `php_system_auth_rule` VALUES (7, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'System/tabs', '\\Hangpu8\\Admin\\controller\\', '', '系统', 0, 'GET', 'layouts/index', '0', '', 'hp-packaging', '1', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (7, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'System/tabs', '\\Hangpu8\\Admin\\controller\\', '0', '系统', 0, 'GET', 'layouts/index', '0', '', 'hp-packaging', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (8, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Webconfig/tabs', '\\Hangpu8\\Admin\\controller\\', 'System/tabs', '配置项', 0, 'GET', '', '0', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (9, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Auth/tabs', '\\Hangpu8\\Admin\\controller\\', 'System/tabs', '权限管理', 0, 'GET', '', '0', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (10, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'SystemWebconfig/form', '\\Hangpu8\\Admin\\controller\\', 'Webconfig/tabs', '系统配置', 0, 'GET', 'form/index', '0', '', '', '1', '1', '0', '0');
@@ -127,7 +127,7 @@ INSERT INTO `php_system_auth_rule` VALUES (11, '2022-10-27 17:22:51', '2022-11-1
 INSERT INTO `php_system_auth_rule` VALUES (12, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'SystemAuthRule/index', '\\Hangpu8\\Admin\\controller\\', 'Auth/tabs', '菜单管理', 0, 'GET', 'table/index', '1', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (13, '2022-10-27 17:22:51', '2022-11-15 14:10:10', 'hpadmin', 'SystemAdminRole/index', '\\Hangpu8\\Admin\\controller\\', 'Auth/tabs', '部门管理', 0, 'GET', 'table/index', '1', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (14, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'SystemAdmin/index', '\\Hangpu8\\Admin\\controller\\', 'Auth/tabs', '账户管理', 0, 'GET', 'table/index', '1', '', '', '1', '1', '0', '0');
-INSERT INTO `php_system_auth_rule` VALUES (15, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Plugin/tabs', '\\Hangpu8\\Admin\\controller\\', '', '功能', 0, 'GET', 'layouts/index', '0', '', 'hp-packaging', '1', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (15, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Plugin/tabs', '\\Hangpu8\\Admin\\controller\\', '0', '功能', 0, 'GET', 'layouts/index', '0', '', 'hp-packaging', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (16, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'PluginApp/tabs', '\\Hangpu8\\Admin\\controller\\', 'Plugin/tabs', '应用插件', 0, 'GET', '', '0', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (17, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Modules/tabs', '\\Hangpu8\\Admin\\controller\\', 'Plugin/tabs', '功能模块', 0, 'GET', '', '0', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (18, '2022-10-27 17:22:51', '2022-10-27 17:22:51', 'hpadmin', 'Plugin/index', '\\Hangpu8\\Admin\\controller\\', 'PluginApp/tabs', '插件中心', 0, 'GET', 'table/index', '1', '', '', '1', '1', '0', '0');
@@ -147,7 +147,7 @@ INSERT INTO `php_system_auth_rule` VALUES (36, '2022-11-15 02:49:00', '2022-11-1
 INSERT INTO `php_system_auth_rule` VALUES (37, '2022-11-15 02:49:46', '2022-11-15 02:49:46', 'hpadmin', 'SystemAdmin/del', '\\Hangpu8\\Admin\\controller\\', 'SystemAdmin/index', '删除账户', 0, 'DELETE', '', '1', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (38, '2022-11-15 09:23:53', '2022-11-15 14:09:44', 'hpadmin', 'SystemAdminRole/auth', '\\Hangpu8\\Admin\\controller\\', 'SystemAuthRole/index', '设置权限', 0, 'GET,PUT', 'form/index', '1', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (39, '2022-11-16 15:19:24', '2022-11-16 15:27:45', 'hpadmin', 'Plugin/create', '\\Hangpu8\\Admin\\controller\\', 'PluginApp/tabs', '创建插件', 0, 'GET,POST', '', '1', '', '', '0', '1', '0', '0');
-INSERT INTO `php_system_auth_rule` VALUES (40, '2022-11-16 15:36:42', '2022-11-16 15:37:25', 'hpadmin', 'SystemConfigGroup/table', '', 'SystemConfigGroup/index', '配置分组列表', 0, 'GET', '', '0', '', '', '0', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (40, '2022-11-16 15:36:42', '2022-11-16 15:37:25', 'hpadmin', 'SystemConfigGroup/table', '\\Hangpu8\\Admin\\controller\\', 'SystemConfigGroup/index', '配置分组列表', 0, 'GET', '', '0', '', '', '0', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (41, '2022-11-16 19:33:49', '2022-11-16 19:36:59', 'hpadmin', 'Uploadify/tabs', '\\Hangpu8\\Admin\\controller\\', 'System/tabs', '附件模块', 0, 'GET', '', '0', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (42, '2022-11-16 19:34:37', '2022-11-16 19:57:12', 'hpadmin', 'SystemUpload/index', '\\Hangpu8\\Admin\\controller\\', 'Uploadify/tabs', '附件管理', 0, 'GET', 'table/index', '1', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (43, '2022-11-16 19:35:31', '2022-11-16 19:57:06', 'hpadmin', 'SystemUpload/upload', '\\Hangpu8\\Admin\\controller\\', 'SystemUpload/index', '上传附件', 0, 'POST', '', '1', '', '', '1', '1', '0', '0');
@@ -159,6 +159,13 @@ INSERT INTO `php_system_auth_rule` VALUES (48, '2022-11-16 19:42:37', '2022-11-1
 INSERT INTO `php_system_auth_rule` VALUES (49, '2022-11-16 19:43:35', '2022-11-16 19:55:15', 'hpadmin', 'SystemUploadCate/del', '\\Hangpu8\\Admin\\controller\\', 'SystemUploadCate/index', '删除附件分类', 0, 'DELETE', '', '1', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (50, '2022-11-16 19:45:01', '2022-11-16 19:55:10', 'hpadmin', 'SystemUploadCate/table', '\\Hangpu8\\Admin\\controller\\', 'SystemUploadCate/index', '附件分类列表', 0, 'GET', '', '0', '', '', '1', '1', '0', '0');
 INSERT INTO `php_system_auth_rule` VALUES (51, '2022-11-16 23:04:14', '2022-11-16 23:04:14', 'hpadmin', 'Publics/loginout', '\\Hangpu8\\Admin\\controller\\', 'Index/tabs', '退出登录', 0, 'DELETE', '', '1', '', '', '0', '1', '1', '1');
+INSERT INTO `php_system_auth_rule` VALUES (64, '2022-11-18 16:47:26', '2022-11-18 16:47:26', 'hpadmin', 'Modules/add', '\\Hangpu8\\Admin\\controller\\', 'Modules/index', '创建数据表', 0, 'GET,POST', 'form/index', '1', '', '', '1', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (65, '2022-11-18 16:48:09', '2022-11-18 16:48:09', 'hpadmin', 'Modules/edit', '\\Hangpu8\\Admin\\controller\\', 'Modules/index', '修改数据表', 0, 'GET,PUT', 'form/index', '1', '', '', '1', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (66, '2022-11-18 16:48:42', '2022-11-18 16:48:42', 'hpadmin', 'Modules/del', '\\Hangpu8\\Admin\\controller\\', 'Modules/index', '删除数据表', 0, 'DELETE', '', '1', '', '', '1', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (67, '2022-11-19 04:13:32', '2022-11-19 04:15:12', 'hpadmin', 'Fields/index', '\\Hangpu8\\Admin\\controller\\', 'Modules/tabs', '字段管理', 0, 'GET', 'table/index', '1', '', '', '0', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (68, '2022-11-19 04:14:14', '2022-11-19 04:14:14', 'hpadmin', 'Fields/add', '\\Hangpu8\\Admin\\controller\\', 'Fields/index', '添加字段', 0, 'GET,POST', 'form/index', '1', '', '', '1', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (69, '2022-11-19 04:14:52', '2022-11-19 04:14:52', 'hpadmin', 'Fields/edit', '\\Hangpu8\\Admin\\controller\\', 'Fields/index', '修改字段', 0, 'GET,PUT', 'form/index', '1', '', '', '1', '1', '0', '0');
+INSERT INTO `php_system_auth_rule` VALUES (70, '2022-11-19 04:15:52', '2022-11-19 04:15:52', 'hpadmin', 'Fields/del', '\\Hangpu8\\Admin\\controller\\', 'Fields/index', '删除字段', 0, 'DELETE', '', '1', '', '', '1', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for php_system_config_group

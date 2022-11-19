@@ -96,9 +96,7 @@ trait Crud
                 );
             } else {
                 // 内置渲染
-                $builder = $this->addEventBefore();
-                $data = $builder->create();
-                return Json::successRes($data);
+                return $this->addEventBefore();
             }
         }
     }

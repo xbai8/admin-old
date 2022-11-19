@@ -580,7 +580,7 @@ class SystemAuthRuleController extends Base
             ->each(function ($item) {
                 return $item;
             })->toArray();
-        $list = DataMgr::channelLevel($list, '', '', 'path');
+        $list = DataMgr::channelLevel($list, '0', '', 'path');
         $list = self::formatData($list);
         $builder = $builder->setData($list);
 
@@ -626,16 +626,16 @@ class SystemAuthRuleController extends Base
      */
     public static function getMenus(array $data): array
     {
-        $field = 'path as value,title as label,pid';
+        $field = ['path as value', 'title as label', 'pid'];
         $authRule = SystemAuthRule::orderBy('sort', 'asc')
             ->select($field)
             ->get()
             ->toArray();
-        $ruleData = DataMgr::channelLevel($authRule, '', '', 'value');
+        $ruleData = DataMgr::channelLevel($authRule, '0', '', 'value');
         $ruleData = self::formatData($ruleData);
         $parent = [
-            'pid'       => '',
-            'value'     => '',
+            'pid'       => '0',
+            'value'     => '0',
             'label'     => '顶级菜单'
         ];
         array_unshift($ruleData, $parent);

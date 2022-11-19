@@ -44,6 +44,7 @@ class SystemAdminRoleController extends Base
         'title'         => '操作选项',
         'extra'         => [
             'template'  => 'rightButtonList',
+            'width'     => 200
         ],
         'button'        => [
             [

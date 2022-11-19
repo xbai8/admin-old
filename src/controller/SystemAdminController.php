@@ -189,13 +189,9 @@ class SystemAdminController extends Base
                     'uploadType'    => 'image',
                     'limit'         => 1,
                     'multiple'      => true,
-                    'action'        => 'api1/hpadmin/SystemUpload/upload',
-                    'headers'       => [
-                        'X-Requested-With'  => 'XMLHttpRequest',
-                    ],
-                    'data'          => [
-                        'dir_name'  => 'system_name',
-                    ],
+                    'action'        => '',
+                    'headers'       => [],
+                    'data'          => [],
                 ],
             ],
         ],

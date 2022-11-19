@@ -40,7 +40,7 @@ class VueRoutesMgr
         $active = 'hpadmin/Index/index';
         // 获取管理员权限
         $roleRule = self::getAdminRoleRule($role_id);
-        $data = DataMgr::channelLevel($roleRule, '', '', 'path');
+        $data = DataMgr::channelLevel($roleRule, '0', '', 'path');
         // 二次处理规则
         $data = self::checkRules($data);
         // 返回前端Vue格式数据
