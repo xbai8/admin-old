@@ -43,10 +43,10 @@ class FormBuilder extends Form
      * 表单配置
      *
      * @param string $name
-     * @param array $data
-     * @return $this
+     * @param array $value
+     * @return FormBuilder
      */
-    public function setConf(string $name, array $value)
+    public function setConf(string $name, array $value): FormBuilder
     {
         $config = $this->builder->formConfig();
         if (count($value) <= 1) {
@@ -59,56 +59,47 @@ class FormBuilder extends Form
     }
 
     /**
-     * 添加表单行
+     * 添加表单行元素
      *
      * @param string $field 组件字段
      * @param string $type 组件类型
      * @param string $title 组件标题
-     * @param [type] $value 组件默认值
-     * @param array $extend 扩展数据
-     * @return $this
+     * @param string $value 组件默认值
+     * @param array $extra 扩展数据
+     * @return FormBuilder
      */
-    public function addRow(string $field, string $type, string $title, $value = '', array $extra = [])
+    public function addRow(string $field, string $type, string $title, $value = '', array $extra = []): FormBuilder
     {
-        if ($type == 'custom') {
-            // 创建自定义组件
-            $component = new CustomComponent($extra['type']);
-            // 设置字段，默认数据等
-            $component
-                ->field($field)
-                ->title($title)
-                ->value($value);
-            // 设置组件属性
-            $extraList = isset($extra['extra']) && is_array($extra['extra']) ? $extra['extra'] : [];
-        } else {
-            // 普通表单类型
-            $component = Elm::$type($field, $title, $value);
-            $extraList = is_array($extra) ? $extra : [];
-        }
-        if ($extraList) {
-            foreach ($extraList as $componentType => $componentTypeValue) {
-                $component->$componentType($componentTypeValue);
-            }
+        // 创建组件
+        $component = Elm::$type($field, $title, $value);
+        foreach ($extra as $componentType => $componentValue) {
+            $component->$componentType($componentValue);
         }
         $this->builder->append($component);
         return $this;
     }
 
     /**
-     * 添加选项卡
+     * 添加自定义组件
      *
-     * @param string $active 默认展示标识
-     * @return $this
+     * @param string $field 组件字段
+     * @param string $type 组件类型
+     * @param string $title 组件标题
+     * @param string $value 组件默认值
+     * @param array $extra 扩展数据
+     * @return FormBuilder
      */
-    public function initTabs(string $active)
+    public function addCustom(string $field, string $type, string $title, $value = '', array $extra = []): FormBuilder
     {
         // 创建自定义组件
-        $component = new CustomComponent('el-tabs');
-        $component->props([
-            'value'                     => $active
-        ]);
-        $this->tabBuilder               = $component;
-        // 返回资源对象
+        $component = new CustomComponent($type);
+        // 设置字段，默认数据等
+        $component->field($field)->title($title)->value($value);
+        // 设置组件属性
+        foreach ($extra as $componentType => $componentValue) {
+            $component->$componentType($componentValue);
+        }
+        $this->builder->append($component);
         return $this;
     }
 
@@ -116,9 +107,10 @@ class FormBuilder extends Form
      * 创建表单分割线
      *
      * @param string $title
-     * @return $this
+     * @param array $extra
+     * @return FormBuilder
      */
-    public function addDivider(string $title)
+    public function addDivider(string $title, array $extra = []): FormBuilder
     {
         // 创建自定义组件
         $component = new CustomComponent('el-divider');
@@ -132,28 +124,54 @@ class FormBuilder extends Form
             ->appendRule('hidden', false)
             ->appendRule('display', true);
         // 设置组件属性
-        if (isset($extra) && $extra) {
-            $component->props($extra);
+        foreach ($extra as $componentType => $componentValue) {
+            $component->$componentType($componentValue);
         }
         $this->builder->append($component);
         return $this;
     }
 
     /**
+     * 初始化选项卡
+     *
+     * @param string $active
+     * @param array $props
+     * @return FormBuilder
+     */
+    public function initTabs(string $active, array $extra = []): FormBuilder
+    {
+        // 选项卡组件
+        $component = new CustomComponent('el-tabs');
+        // 设置默认选中
+        $component->value($active);
+        // 设置默认样式
+        $component->style([
+            'width'         => '100%',
+            'margin'        => '0 15px',
+        ]);
+        foreach ($extra as $componentType => $componentValue) {
+            $component->$componentType($componentValue);
+        }
+        $this->tabBuilder               = $component;
+        // 返回资源对象
+        return $this;
+    }
+
+    /**
      * 添加子面板数据
      *
-     * @param string $title 选项卡名称
-     * @param string $value 选项家标识
-     * @param array $children 选项卡内容数据
-     * @return $this
+     * @param string $field
+     * @param string $title
+     * @param array $children
+     * @return FormBuilder
      */
-    public function addTab(string $title, string $value, array $children)
+    public function addTab(string $field, string $title, array $children): FormBuilder
     {
         $component[]                        = [
             'type'                          => 'el-tab-pane',
             'props'                         => [
+                'name'                      => $field,
                 'label'                     => $title,
-                'name'                      => $value,
             ],
             'children'                      => $children
         ];
@@ -163,12 +181,23 @@ class FormBuilder extends Form
     }
 
     /**
-     * 设置行数据
+     * 结束选项卡表单
      *
-     * @param array $data 表单数据
      * @return $this
      */
-    public function setFormData(array $data)
+    public function endTabs(): FormBuilder
+    {
+        $this->builder->append($this->tabBuilder);
+        return $this;
+    }
+
+    /**
+     * 设置表单渲染数据
+     *
+     * @param array $data
+     * @return FormBuilder
+     */
+    public function setFormData(array $data): FormBuilder
     {
         $this->builder->formData($data);
         return $this;
@@ -177,10 +206,10 @@ class FormBuilder extends Form
     /**
      * 设置请求方式
      *
-     * @param [type] $method
-     * @return $this
+     * @param string $method
+     * @return FormBuilder
      */
-    public function setMethod($method = 'GET')
+    public function setMethod($method = 'GET'): FormBuilder
     {
         $this->builder->setMethod(strtoupper($method));
         return $this;
@@ -189,23 +218,12 @@ class FormBuilder extends Form
     /**
      * 设置请求地址
      *
-     * @param [type] $action
-     * @return $this
+     * @param string $action
+     * @return FormBuilder
      */
-    public function setAction($action)
+    public function setAction($action = ''): FormBuilder
     {
         $this->builder->setAction($action);
-        return $this;
-    }
-
-    /**
-     * 结束选项卡表单
-     *
-     * @return $this
-     */
-    public function endTabs()
-    {
-        $this->builder->append($this->tabBuilder);
         return $this;
     }
 
@@ -214,7 +232,7 @@ class FormBuilder extends Form
      *
      * @return array
      */
-    public function create()
+    public function create(): array
     {
         $apiUrl = $this->builder->getAction();
         $method = $this->builder->getMethod();
@@ -228,9 +246,9 @@ class FormBuilder extends Form
     /**
      * 获取builder生成类对象
      *
-     * @return $this
+     * @return Form
      */
-    public function getBuilder()
+    public function getBuilder(): Form
     {
         return $this->builder;
     }

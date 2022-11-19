@@ -5,6 +5,7 @@ namespace Hangpu8\Admin\utils\manager;
 use Exception;
 use Hangpu8\Admin\middleware\AccessMiddleware;
 use Hangpu8\Admin\model\SystemAuthRule;
+use Illuminate\Support\Facades\DB;
 use Webman\Route;
 use support\Request;
 
@@ -94,9 +95,9 @@ class RoutesMgr
     private static function installed()
     {
         $where = [
-            ['auth_type', '=', 1],
+            'auth_type' => '1'
         ];
-        $routes = SystemAuthRule::where($where)->select()->toArray();
+        $routes = SystemAuthRule::where($where)->orderBy('sort', 'asc')->get()->toArray();
 
         // 注册组路由
         Route::group('/', function () use ($routes) {

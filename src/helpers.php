@@ -41,7 +41,7 @@ function getHpConfig($key = '', $cid = 0)
     if ($key) {
         $data = '';
         $map['name'] = $key;
-        $info = $model->where($map)->find();
+        $info = $model->where($map)->first();
         if ($info) {
             switch ($info['type']) {
                 case 'image':
@@ -61,7 +61,7 @@ function getHpConfig($key = '', $cid = 0)
     } else {
         $list = $model
             ->where($map)
-            ->order('id asc')
+            ->orderBy('id', 'asc')
             ->select();
         foreach ($list as $key => $value) {
             if ($value['type'] == 'image') {

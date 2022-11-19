@@ -4,7 +4,7 @@ namespace Hangpu8\Admin\crud\util;
 
 use Exception;
 use Hangpu8\Admin\utils\Util;
-use think\Model;
+use support\Model;
 
 trait Input
 {
@@ -44,11 +44,13 @@ trait Input
     {
         $model = $this->model;
         $table = $model->getTable();
-        $all_columns = Util::db()->query("SHOW FULL COLUMNS FROM `{$table}`");
+        $prefix = Util::getDatabase()['prefix'];
+        $all_columns = Util::db()->select("SHOW FULL COLUMNS FROM `{$prefix}{$table}`");
         if (!$all_columns) {
             throw new Exception('表不存在', 2);
         }
-        return $all_columns;
+        $data = array_map('get_object_vars', $all_columns);
+        return $data;
     }
 
     /**
@@ -139,7 +141,7 @@ trait Input
             }
         }
         // 获得查询模型
-        $model = $model->find();
+        $model = $model->first();
         if (!$model) {
             throw new Exception('该数据不存在');
         }

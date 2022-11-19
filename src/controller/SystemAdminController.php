@@ -312,20 +312,16 @@ class SystemAdminController extends Base
         $model = $this->model;
         $admin_id = hp_admin_id();
         $where = [
-            ['admin.id', '<>', $admin_id],
-            ['admin.pid', '=', $admin_id],
+            ['system_admin.id', '<>', $admin_id],
+            ['system_admin.pid', '=', $admin_id],
         ];
-        $model = $model->alias('admin')
-            ->join('system_admin_role role', 'role.id=admin.role_id')
+        $model = $model
+            ->join('system_admin_role as role', 'role.id', '=', 'system_admin.role_id')
             ->where($where);
 
-        $model = $model->order('id', 'desc');
-
-        $field = [
-            'admin.*',
-            'role.title as role_id'
-        ];
-        $model = $model->field($field);
+        $model = $model->orderBy('system_admin.id', 'desc');
+        // 取部分字段
+        $model = $model->select(['system_admin.*', 'role.title as role_id']);
 
         // 返回构造模型
         return $model;
@@ -424,7 +420,7 @@ class SystemAdminController extends Base
         $where = [
             ['id', '=', $id],
         ];
-        $model = $model->where($where)->find();
+        $model = $model->where($where)->first();
         if ($model->is_system == '1') {
             throw new Exception('系统管理用户，禁止删除');
         }

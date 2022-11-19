@@ -7,16 +7,23 @@
     "php": ">=7.2",
     "xaboy/form-builder": "~2.0",
     "webman/console": "^1.2",
-    "webman/think-orm": "^1.0",
+    "psr/container": "^1.1.1",
     "topthink/think-validate": "^2.0",
     "vlucas/phpdotenv": "^5.4",
     "webman/captcha": "^1.0",
     "phpoffice/phpspreadsheet": "^1.25",
-    "shopwwi/webman-filesystem": "^1.0"
+    "shopwwi/webman-filesystem": "^1.0",
+    "illuminate/database": "^8.83",
+    "illuminate/pagination": "^8.83",
+    "illuminate/events": "^8.83",
+    "symfony/var-dumper": "^5.4"
   },
   "autoload": {
     "psr-4": {
       "Hangpu8\\Admin\\": "src"
-    }
+    },
+    "files": [
+      "./src/helpers.php"
+    ]
   }
 }

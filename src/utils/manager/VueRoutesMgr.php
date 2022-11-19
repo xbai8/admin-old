@@ -61,9 +61,8 @@ class VueRoutesMgr
             // 隐藏菜单移除
             if ($value['show'] == 0) {
                 unset($data[$key]);
-            }
-            // 子菜单检测
-            if ($value['children']) {
+            } else if ($value['children']) {
+                // 子菜单检测
                 $data[$key]['children'] = self::checkRules($value['children']);
             }
         }
@@ -79,9 +78,9 @@ class VueRoutesMgr
     public static function getAdminRoleRule(int $role_id): array
     {
         $where = [
-            ['id', '=', $role_id],
+            'id'        => $role_id
         ];
-        $roleModel = SystemAdminRole::where($where)->field('rule,is_system')->find();
+        $roleModel = SystemAdminRole::where($where)->select(['rule', 'is_system'])->first();
         if (!$roleModel) {
             throw new Exception('该部门不存在');
         }
@@ -89,9 +88,8 @@ class VueRoutesMgr
             // 系统级部门（全部权限）
             $where = [];
             $data = SystemAuthRule::where($where)
-                ->order('sort', 'asc')
-                ->visible(self::$visible)
-                ->select()
+                ->orderBy('sort', 'asc')
+                ->get()
                 ->toArray();
         } else {
             // 普通级部门（按授权规则）
@@ -100,9 +98,8 @@ class VueRoutesMgr
                 ['path', 'in', $rule],
             ];
             $data = SystemAuthRule::where($where)
-                ->order('id', 'asc')
-                ->visible(self::$visible)
-                ->select()
+                ->orderBy('sort', 'asc')
+                ->get()
                 ->toArray();
             foreach ($data as $value) {
                 if (!in_array($value['pid'], $rule) && $value['pid']) {
@@ -143,7 +140,7 @@ class VueRoutesMgr
         ];
         $model = SystemAuthRule::where($where)
             ->visible(self::$visible)
-            ->find();
+            ->first();
         if (!$model) {
             throw new Exception('父级规则不存在');
         }

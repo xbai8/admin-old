@@ -8,7 +8,6 @@ use Hangpu8\Admin\crud\util\ClassParse;
 use Hangpu8\Admin\crud\util\Input;
 use Hangpu8\Admin\crud\util\TableView;
 use Hangpu8\Admin\utils\Json;
-use think\model;
 use support\Request;
 
 /**

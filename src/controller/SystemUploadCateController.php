@@ -228,7 +228,7 @@ class SystemUploadCateController extends Base
         $where = [
             ['id', '=', $id],
         ];
-        $model = $model->where($where)->find();
+        $model = $model->where($where)->first();
         if ($model->is_system == '1') {
             throw new Exception('系统附件分类，禁止删除');
         }
@@ -246,7 +246,7 @@ class SystemUploadCateController extends Base
         $where = [
             'dir_name'      => $dir_name
         ];
-        $model = SystemUploadCate::where($where)->find();
+        $model = SystemUploadCate::where($where)->first();
         if (!$model) {
             throw new Exception('该分类不存在');
         }

@@ -40,16 +40,15 @@ class PublicsController extends Base
         hpValidate(ValidateSystemAdmin::class, $post, 'login');
 
         // 查询数据
-        $where['admin.username'] = $post['username'];
+        $where['system_admin.username'] = $post['username'];
         $field = [
-            'admin.*',
+            'system_admin.*',
             'role.title as level,role.is_system'
         ];
-        $adminModel = SystemAdmin::alias('admin')
-            ->join('system_admin_role role', 'role.id=admin.role_id')
+        $adminModel = SystemAdmin::join('system_admin_role as role', 'role.id', '=', 'system_admin.role_id')
             ->where($where)
-            ->field($field)
-            ->find();
+            ->select($field)
+            ->first();
         if (!$adminModel) {
             throw new Exception('登录账号错误');
         }

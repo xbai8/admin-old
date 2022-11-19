@@ -575,8 +575,8 @@ class SystemAuthRuleController extends Base
                 ],
             ]);
         // 设置数据
-        $list = $model->order('sort', 'asc')
-            ->select()
+        $list = $model->orderBy('sort', 'asc')
+            ->get()
             ->each(function ($item) {
                 return $item;
             })->toArray();
@@ -627,9 +627,9 @@ class SystemAuthRuleController extends Base
     public static function getMenus(array $data): array
     {
         $field = 'path as value,title as label,pid';
-        $authRule = SystemAuthRule::order('sort asc,id asc')
-            ->field($field)
-            ->select()
+        $authRule = SystemAuthRule::orderBy('sort', 'asc')
+            ->select($field)
+            ->get()
             ->toArray();
         $ruleData = DataMgr::channelLevel($authRule, '', '', 'value');
         $ruleData = self::formatData($ruleData);

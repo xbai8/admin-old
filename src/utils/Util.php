@@ -2,8 +2,10 @@
 
 namespace Hangpu8\Admin\utils;
 
+use Exception;
+use Illuminate\Database\Schema\Builder;
+use support\Db;
 use Support\Exception\BusinessException;
-use think\facade\Db;
 use Throwable;
 
 class Util
@@ -13,12 +15,40 @@ class Util
      */
     static function db()
     {
-        return Db::connect('plugin.hangpu8.admin.mysql');
+        return Db::connection('plugin.hangpu8.admin.mysql');
     }
 
-    static function schema()
+    /**
+     * 获取Laravel数据库连接实例
+     *
+     * @return Builder
+     */
+    static function schema(): Builder
     {
         return Db::schema('plugin.hangpu8.admin.mysql');
+    }
+
+    /**
+     * 获取数据库配置
+     *
+     * @return void
+     */
+    static function getConfig()
+    {
+        return config('plugin.hangpu8.admin.database');
+    }
+
+    /**
+     * 获取当前使用数据库
+     *
+     * @return array
+     */
+    static function getDatabase(): array
+    {
+        $config = self::getConfig();
+        $default = isset($config['default']) ? $config['default'] : 'mysql';
+        $connections = isset($config['connections']) ? $config['connections'] : [];
+        return isset($connections[$default]) ? $connections[$default] : [];
     }
 
     /**
@@ -45,10 +75,19 @@ class Util
         return password_verify($password, $hash);
     }
 
-    static public function checkTableName($table)
+    /**
+     * 检测表名
+     *
+     * @param string $table
+     * @return boolean
+     */
+    static public function checkTableName(string $table): bool
     {
+        if (is_numeric($table)) {
+            throw new Exception('表名不能是纯数字');
+        }
         if (!preg_match('/^[a-zA-Z_0-9]+$/', $table)) {
-            throw new BusinessException('表名不合法');
+            throw new Exception('表名不合法');
         }
         return true;
     }

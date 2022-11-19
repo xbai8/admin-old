@@ -178,7 +178,7 @@ class SystemConfigGroupController extends Base
         $where = [
             ['id', '=', $id],
         ];
-        $model = $model->where($where)->find();
+        $model = $model->where($where)->first();
         if ($model->is_system == '1') {
             throw new Exception('系统配置分组，禁止删除');
         }

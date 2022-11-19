@@ -9,9 +9,9 @@ use Hangpu8\Admin\crud\util\FormView;
 use Hangpu8\Admin\crud\util\Input;
 use Hangpu8\Admin\crud\util\TableView;
 use Hangpu8\Admin\utils\Json;
+use support\Model;
 use support\Request;
 use support\Response;
-use think\Model;
 
 /**
  * @title CRUD事件处理
@@ -62,7 +62,7 @@ trait CrudEvent
             }
         }
         // 数据排序
-        $model = $model->order($field, $order);
+        $model = $model->orderBy($field, $order);
 
         // 返回模型
         return $model;
@@ -146,7 +146,7 @@ trait CrudEvent
                 (int)$paginate['current_page']
             );
         } else {
-            $items = $model->select()->toArray();
+            $items = $model->get()->toArray();
         }
         // 解析控制器
         $class = $this->parse();

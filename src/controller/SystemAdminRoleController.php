@@ -99,7 +99,9 @@ class SystemAdminRoleController extends Base
         'id'                => [
             'width'         => 100,
         ],
-        'create_at'         => [],
+        'create_at'         => [
+            'width'         => 180
+        ],
         'title'             => [],
         'is_system'         => [
             'type'          => 'tag',
@@ -157,7 +159,7 @@ class SystemAdminRoleController extends Base
             ['pid', '=', $admin['role_id']],
         ];
         $model = $model->where($where);
-        $model = $model->order('id', 'desc');
+        $model = $model->orderBy('id', 'desc');
 
         // 返回构造模型
         return $model;
@@ -193,7 +195,7 @@ class SystemAdminRoleController extends Base
         $where = [
             ['id', '=', $id],
         ];
-        $model = $model->where($where)->find();
+        $model = $model->where($where)->first();
         if ($model->is_system == '1') {
             throw new Exception('系统部门，禁止删除');
         }
@@ -217,7 +219,7 @@ class SystemAdminRoleController extends Base
         $where = [
             'id'        => $id,
         ];
-        $roleModel = $model->where($where)->find();
+        $roleModel = $model->where($where)->first();
         if (!$roleModel) {
             throw new Exception('找不到该数据');
         }
@@ -240,9 +242,8 @@ class SystemAdminRoleController extends Base
                 'pid',
                 'is_default'
             ];
-            $rule = SystemAuthRule::order('sort asc,id asc')
-                ->visible($visible)
-                ->select()
+            $rule = SystemAuthRule::orderBy('sort', 'asc')
+                ->get()
                 ->toArray();
             $rule = self::fieldMap($rule, 'path', 'id');
             $authRule = DataMgr::channelLevel($rule, '', '', 'id');
@@ -252,9 +253,7 @@ class SystemAdminRoleController extends Base
             $builder = new FormBuilder;
             $data = $builder
                 ->setMethod($method)
-                ->addRow('title', 'custom', '部门名称', '', [
-                    'type'                              => 'info-text',
-                ])
+                ->addCustom('title', 'info', '部门名称')
                 ->addRow('rule', 'tree', '权限授权', [], [
                     'data'                      => $authRule,
                     'showCheckbox'              => true,
@@ -274,10 +273,10 @@ class SystemAdminRoleController extends Base
      */
     public static function getRoleOptions(array $data): array
     {
-        $field = 'id as value,title as label';
-        $options = SystemAdminRole::order('id desc')
-            ->field($field)
-            ->select()
+        $field = ['id as value', 'title as label'];
+        $options = SystemAdminRole::orderBy('id', 'desc')
+            ->select($field)
+            ->get()
             ->each(function ($item) {
                 return $item;
             })->toArray();

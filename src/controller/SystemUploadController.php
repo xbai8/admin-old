@@ -193,7 +193,7 @@ class SystemUploadController extends Base
         $where = [
             ['id', '=', $id],
         ];
-        $model = $model->where($where)->find();
+        $model = $model->where($where)->first();
         return $model;
     }
 
