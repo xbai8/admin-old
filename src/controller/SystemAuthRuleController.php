@@ -246,6 +246,7 @@ class SystemAuthRuleController extends Base
         ],
         'icon'              => [
             'type'          => 'input',
+            'value'         => "hp-product",
             'replace'       => "",
             'save'          => true,
             'extra'         => [],
@@ -465,7 +466,7 @@ class SystemAuthRuleController extends Base
         ],
         'icon'              => [
             'type'          => 'input',
-            'value'         => 'hp-product',
+            'value'         => '',
             'replace'       => "",
             'save'          => true,
             'extra'         => [],
