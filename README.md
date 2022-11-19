@@ -32,17 +32,11 @@ composer create-project workerman/webman
 composer require -W hangpu8/admin
 ```
 
-### 步骤4：设置目录权限
-（Linux与mac权限需要设置）
-```text
-设置 public 目录权限为777
-设置 runtime 目录权限为777
-设置 vendor 目录权限为777
-```
-### 步骤5：访问域名，直接安装
+### 步骤3：访问域名，直接安装
 ```text
 以上操作完成，直接访问域名进行安装  
-安装完成后，可根据链接选择打开后台登录  
+安装完成后，请重新启动webman
+然后可根据链接选择打开后台登录  
 自此所有安装完成，可以进行开发之旅了  
 ```
 

@@ -247,7 +247,7 @@ class SystemAdminRoleController extends Base
                 ->get()
                 ->toArray();
             $rule = self::fieldMap($rule, 'path', 'id');
-            $authRule = DataMgr::channelLevel($rule, '', '', 'id');
+            $authRule = DataMgr::channelLevel($rule, '0', '', 'id');
             $authRule = SystemAuthRuleController::formatData($authRule);
             // 解析权限规则
             $roleData['rule'] = $roleData['rule'] ? explode(',', $roleData['rule']) : [];
