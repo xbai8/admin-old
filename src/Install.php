@@ -19,11 +19,6 @@ class Install
      */
     public static function install()
     {
-        // 检测TP-ORM配置文件
-        $tpPath = config_path() . '/thinkorm.php';
-        if (file_exists($tpPath)) {
-            unlink($tpPath);
-        }
         static::installByRelation();
     }
 
