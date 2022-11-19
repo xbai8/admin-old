@@ -102,7 +102,7 @@ class RoutesMgr
         Route::group('/', function () use ($routes) {
             foreach ($routes as $value) {
                 if (strpos($value['path'], '/') === false) {
-                    throw new Exception('路由注册失败,path不符合规则');
+                    throw new Exception("路由注册失败,path不符合规则,路由{$value['path']}");
                 }
                 $methods = explode(',', $value['method']);
                 list($controller, $action) = explode('/', $value['path']);

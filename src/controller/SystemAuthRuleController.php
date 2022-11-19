@@ -2,6 +2,7 @@
 
 namespace Hangpu8\Admin\controller;
 
+use Exception;
 use Hangpu8\Admin\Base;
 use Hangpu8\Admin\crud\Crud;
 use Hangpu8\Admin\model\SystemAuthRule;
@@ -111,6 +112,7 @@ class SystemAuthRuleController extends Base
         ],
         'namespace'         => [
             'type'          => 'input',
+            'value'         => "app\\admin\\controller\\",
             'replace'       => '',
             'save'          => true,
             'extra'         => [
@@ -171,7 +173,7 @@ class SystemAuthRuleController extends Base
         ],
         'auth_rule'         => [
             'type'          => 'select',
-            'value'         => 'form/index',
+            'value'         => '',
             'replace'       => "：layouts/index一级目录，'' 二级目录",
             'save'          => true,
             'extra'         => [
@@ -627,6 +629,10 @@ class SystemAuthRuleController extends Base
      */
     public static function formAddCallback(array $data): array
     {
+        // 验证规则
+        if (strpos($data['path'], '/') === false) {
+            throw new Exception('请求地址规则错误');
+        }
         $data['pid'] = is_array($data['pid']) ? end($data['pid']) : $data['pid'];
         $data['path'] = ucfirst($data['path']);
         $data['method'] = implode(',', $data['method']);
@@ -656,6 +662,7 @@ class SystemAuthRuleController extends Base
     {
         $field = ['path as value', 'title as label', 'pid'];
         $authRule = SystemAuthRule::orderBy('sort', 'asc')
+            ->orderBy('id')
             ->select($field)
             ->get()
             ->toArray();
