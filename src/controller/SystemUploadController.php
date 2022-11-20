@@ -6,6 +6,7 @@ use Exception;
 use Hangpu8\Admin\Base;
 use Hangpu8\Admin\crud\Crud;
 use Hangpu8\Admin\model\SystemUpload;
+use Hangpu8\Admin\utils\Upload;
 use Shopwwi\WebmanFilesystem\Facade\Storage;
 use support\Request;
 
@@ -59,15 +60,6 @@ class SystemUploadController extends Base
 
     // 是否有分页
     public $paginate = true;
-
-    // 验证器
-    public $validate = [
-        'class'             => \Hangpu8\Admin\validate\SystemAdmin::class,
-        'scene'             => [
-            'add'           => 'add',
-            'edit'          => 'edit',
-        ],
-    ];
 
     // 表格列
     public $columns = [
@@ -166,7 +158,7 @@ class SystemUploadController extends Base
                 'props'     => [
                     'modalTitle'    => '图片预览',
                     'listType'      => 'picture-card',
-                    'action'        => 'https://jsonplaceholder.typicode.com/posts/',
+                    'action'        => '',
                 ],
             ],
         ],
@@ -212,7 +204,7 @@ class SystemUploadController extends Base
         $cid = SystemUploadCateController::verifyDirName($dir_name);
 
         // 获取上传配置
-        $config = self::getConfig();
+        $config = Upload::getConfig();
         // 默认最大上传100M
         $max_size = isset($config['max_size']) ? $config['max_size'] : 1024 * 1024 * 100;
         // 允许上传文件类型 为空则为允许所有
@@ -229,6 +221,7 @@ class SystemUploadController extends Base
 
         // 储存附件
         $data = [
+            'create_at' => date('Y-m-d H:i:s'),
             'cid'       => $cid,
             'path'      => $result->file_name,
             'filename'  => basename($result->file_name),
@@ -251,45 +244,6 @@ class SystemUploadController extends Base
             'url'       => $result->file_url
         ];
         return parent::successRes($response);
-    }
-
-    /**
-     * 获取上传配置
-     *
-     * @return array
-     */
-    public static function getConfig(): array
-    {
-        return \config('plugin.shopwwi.filesystem.app');
-    }
-
-    /**
-     * 获取默认选定器
-     *
-     * @return array
-     */
-    public static function getStorageConfig(): array
-    {
-        $confog = self::getConfig();
-        $default = isset($confog['default']) ? $confog['default'] : 'public';
-        $storage = isset($confog['storage']) ? $confog['storage'] : [];
-        return isset($storage[$default]) ? $storage[$default] : [];
-    }
-
-    /**
-     * 替换上传地址为路径
-     *
-     * @param string $url
-     * @return string
-     */
-    public static function urlReplace(string $url): string
-    {
-        $storageConfig = self::getStorageConfig();
-        if (!isset($storageConfig['url'])) {
-            throw new Exception('替换地址错误，没有找到配置的URL');
-        }
-        $path = str_replace("{$storageConfig['url']}/", '', $url);
-        return $path;
     }
 
     /**
