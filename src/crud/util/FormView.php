@@ -46,13 +46,13 @@ trait FormView
             foreach ($allColumns as $value) {
                 if ($field == $value['Field']) {
                     // 基础列
-                    $item['field'] = $value['Field'];
-                    $item['type'] = isset($form['type']) ? $form['type'] : 'input';
-                    $item['callback'] = isset($form['callback']) ? $form['callback'] : [];
-                    $item['save'] = isset($form['save']) ? $form['save'] : false;
-                    $item['title'] = $value['Comment'];
-                    $item['value'] = isset($form['value']) ? $form['value'] : '';
-                    $item['extra'] = isset($form['extra']) ? $form['extra'] : [];
+                    $item['field']      = $value['Field'];
+                    $item['type']       = isset($form['type']) ? $form['type'] : 'input';
+                    $item['callback']   = isset($form['callback']) ? $form['callback'] : [];
+                    $item['save']       = isset($form['save']) ? $form['save'] : false;
+                    $item['title']      = $value['Comment'];
+                    $item['value']      = isset($form['value']) ? $form['value'] : '';
+                    $item['extra']      = isset($form['extra']) ? $form['extra'] : [];
                     // 替换字符串
                     if (isset($form['replace']) && $form['replace']) {
                         $item['title'] = str_replace($form['replace'], '', $value['Comment']);

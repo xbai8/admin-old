@@ -197,6 +197,13 @@ trait CrudEvent
                     $value['callback'][1]
                 ], $value);
             }
+            // 处理配置项上传路径
+            if (isset($value['type']) && $value['type'] == 'upload') {
+                $extra = [
+                    'props'     => config('plugin.hangpu8.admin.upload'),
+                ];
+                $value['extra'] = array_merge($value['extra'], $extra);
+            }
             $builder = $builder->addRow(
                 $value['field'],
                 $value['type'],
