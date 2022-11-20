@@ -6,6 +6,7 @@ use Exception;
 use Hangpu8\Admin\Base;
 use Hangpu8\Admin\crud\Crud;
 use Hangpu8\Admin\model\SystemAdmin;
+use Hangpu8\Admin\utils\Upload;
 use Hangpu8\Admin\utils\Util;
 use Shopwwi\WebmanFilesystem\Facade\Storage;
 use support\Request;
@@ -188,10 +189,6 @@ class SystemAdminController extends Base
                     'listType'      => 'picture-card',
                     'uploadType'    => 'image',
                     'limit'         => 1,
-                    'multiple'      => true,
-                    'action'        => '',
-                    'headers'       => [],
-                    'data'          => [],
                 ],
             ],
         ],
@@ -355,7 +352,7 @@ class SystemAdminController extends Base
 
         // 头像处理
         $headimg = is_array($data['headimg']) ? current($data['headimg']) : $data['headimg'];
-        $data['headimg'] = SystemUploadController::urlReplace((string) $headimg);
+        $data['headimg'] = Upload::urlReplace((string) $headimg);
 
         // 返回处理数据
         return $data;
@@ -382,7 +379,7 @@ class SystemAdminController extends Base
 
         // 头像处理
         $headimg = is_array($data['headimg']) ? current($data['headimg']) : $data['headimg'];
-        $data['headimg'] = SystemUploadController::urlReplace((string) $headimg);
+        $data['headimg'] = Upload::urlReplace((string) $headimg);
 
         // 返回处理数据
         return $data;

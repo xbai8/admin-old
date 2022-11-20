@@ -202,7 +202,7 @@ trait CrudEvent
                 $upload = config('plugin.hangpu8.admin.upload');
                 $extra = _array_merge($upload, isset($value['extra']['props']) ? $value['extra']['props'] : []);
                 $authorization = request()->header('Authorization');
-                $extra['props']['headers']['Authorization'] = $authorization;
+                $extra['headers']['Authorization'] = $authorization;
                 $value['extra']['props'] = $extra;
             }
             $builder = $builder->addRow(
@@ -313,7 +313,7 @@ trait CrudEvent
                 $upload = config('plugin.hangpu8.admin.upload');
                 $extra = _array_merge($upload, isset($value['extra']['props']) ? $value['extra']['props'] : []);
                 $authorization = request()->header('Authorization');
-                $extra['props']['headers']['Authorization'] = $authorization;
+                $extra['headers']['Authorization'] = $authorization;
                 $value['extra']['props'] = $extra;
             }
             $builder = $builder->addRow(
