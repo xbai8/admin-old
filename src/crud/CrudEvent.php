@@ -197,14 +197,13 @@ trait CrudEvent
                     $value['callback'][1]
                 ], $value);
             }
-            // 处理配置项上传路径
+            // 处理上传组件
             if (isset($value['type']) && $value['type'] == 'upload') {
-                $extra = [
-                    'props'     => config('plugin.hangpu8.admin.upload'),
-                ];
+                $upload = config('plugin.hangpu8.admin.upload');
+                $extra = _array_merge($upload, isset($value['extra']['props']) ? $value['extra']['props'] : []);
                 $authorization = request()->header('Authorization');
                 $extra['props']['headers']['Authorization'] = $authorization;
-                $value['extra'] = array_merge($value['extra'], $extra);
+                $value['extra']['props'] = $extra;
             }
             $builder = $builder->addRow(
                 $value['field'],
@@ -309,14 +308,13 @@ trait CrudEvent
                     $value['callback'][1]
                 ], $value);
             }
-            // 处理配置项上传路径
+            // 处理上传组件
             if (isset($value['type']) && $value['type'] == 'upload') {
-                $extra = [
-                    'props'     => config('plugin.hangpu8.admin.upload'),
-                ];
+                $upload = config('plugin.hangpu8.admin.upload');
+                $extra = _array_merge($upload, isset($value['extra']['props']) ? $value['extra']['props'] : []);
                 $authorization = request()->header('Authorization');
                 $extra['props']['headers']['Authorization'] = $authorization;
-                $value['extra'] = array_merge($value['extra'], $extra);
+                $value['extra']['props'] = $extra;
             }
             $builder = $builder->addRow(
                 $value['field'],

@@ -282,3 +282,24 @@ function list_sort_by($list, $field, $sortby = 'asc')
     }
     return false;
 }
+
+/**
+ * 合并数组
+ *
+ * @param array $oldArr
+ * @param array $newArr
+ * @return array
+ */
+function _array_merge(array $oldArr, array $newArr): array
+{
+    $data = array_merge($oldArr, $newArr);
+    foreach ($data as $key => $value) {
+        if (is_array($value)) {
+            $data[$key] = array_merge(
+                isset($oldArr[$key]) ? $oldArr[$key] : [],
+                isset($newArr[$key]) ? $newArr[$key] : []
+            );
+        }
+    }
+    return $data;
+}

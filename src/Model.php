@@ -20,10 +20,10 @@ class Model extends SupportModel
     const CREATED_AT = 'create_at';
     const UPDATED_AT = 'update_at';
 
-    // 默认时间转换输出
+    // 字段类型
     protected $casts = [
-        'create_at' => 'datetime:Y-m-d H:i:s',
-        'update_at' => 'datetime:Y-m-d H:i:s',
+        'create_at'     => 'datetime:Y-m-d H:i:s',
+        'update_at'     => 'datetime:Y-m-d H:i:s',
     ];
 
     /**
