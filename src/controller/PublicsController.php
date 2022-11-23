@@ -43,7 +43,8 @@ class PublicsController extends Base
         $where['system_admin.username'] = $post['username'];
         $field = [
             'system_admin.*',
-            'role.title as level,role.is_system'
+            'role.title as level',
+            'role.is_system'
         ];
         $adminModel = SystemAdmin::join('system_admin_role as role', 'role.id', '=', 'system_admin.role_id')
             ->where($where)

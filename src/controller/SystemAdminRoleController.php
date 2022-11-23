@@ -244,6 +244,7 @@ class SystemAdminRoleController extends Base
                 'is_default'
             ];
             $rule = SystemAuthRule::orderBy('sort', 'asc')
+                ->select($visible)
                 ->get()
                 ->toArray();
             $rule = self::fieldMap($rule, 'path', 'id');

@@ -720,9 +720,9 @@ class SystemAuthRuleController extends Base
     public static function getDefaultRule(): array
     {
         $where = [
-            ['is_default', '=', 1],
+            ['is_default', '=', '1'],
         ];
-        $data = SystemAuthRule::where($where)->column('path');
+        $data = SystemAuthRule::where($where)->pluck('path')->toArray();
         return $data;
     }
 }

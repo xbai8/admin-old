@@ -94,10 +94,7 @@ class VueRoutesMgr
         } else {
             // 普通级部门（按授权规则）
             $rule = explode(',', $roleModel->rule);
-            $where = [
-                ['path', 'in', $rule],
-            ];
-            $data = SystemAuthRule::where($where)
+            $data = SystemAuthRule::whereIn('path', $rule)
                 ->orderBy('sort', 'asc')
                 ->get()
                 ->toArray();
@@ -121,6 +118,7 @@ class VueRoutesMgr
     public static function getAdminRoleColumn(int $role_id): array
     {
         $rule = self::getAdminRoleRule($role_id);
+        $data = [];
         foreach ($rule as $key => $value) {
             $data[$key] = $value['path'];
         }
@@ -139,7 +137,7 @@ class VueRoutesMgr
             ['path', '=', $rule],
         ];
         $model = SystemAuthRule::where($where)
-            ->visible(self::$visible)
+            ->select(self::$visible)
             ->first();
         if (!$model) {
             throw new Exception('父级规则不存在');
